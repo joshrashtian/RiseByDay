@@ -31,9 +31,13 @@ type ContainerHeaderType = DivProps & {
   heading: string
 }
 
-const ContainerHeader = ({ className, id, icon, heading }: ContainerHeaderType) => {
+const ContainerHeader = ({ className, id, icon, heading, ...props }: ContainerHeaderType) => {
   return (
-  <div className="flex  items-center justify-between gap-4 border-b border-line px-4 py-4">
+  <div
+    id={id}
+    className={twMerge('flex items-center justify-between gap-4 border-b border-line px-4 py-4', className)}
+    {...props}
+  >
       <div className="flex items-center gap-3">
         { icon &&
       <span className="inline-flex size-10 items-center justify-center border-b text-xl ">
