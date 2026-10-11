@@ -757,4 +757,15 @@ export const useTasksStore = create<TasksState>()(
   ),
 );
 
+// Other windows (e.g. the cognition quick-add bar) write to the same
+// localStorage key; reload so this window shows their tasks and doesn't
+// overwrite them with a stale copy on its next save.
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (event) => {
+    if (event.key === STORAGE_KEY) {
+      void useTasksStore.persist.rehydrate();
+    }
+  });
+}
+
 export const useTasks = useTasksStore;
