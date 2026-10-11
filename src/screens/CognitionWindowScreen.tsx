@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { motion } from "motion/react";
-import { Pencil01, Pencil02 } from "@untitledui/icons";
+import { Pencil02 } from "@untitledui/icons";
 import { parseTaskChatInput } from "../components/tasks/functions/parseTokens";
 import { getActiveBlockNameAt } from "../lib/taskBlocks";
 import { useTasksStore } from "../stores/tasksStore";

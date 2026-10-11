@@ -31,7 +31,7 @@ type ContainerHeaderType = DivProps & {
   heading: string
 }
 
-const ContainerHeader = ({ className, id, icon, heading, ...props }: ContainerHeaderType) => {
+const ContainerHeader = ({ className, id, icon, heading }: ContainerHeaderType) => {
   return (
   <div className="flex  items-center justify-between gap-4 border-b border-line px-4 py-4">
       <div className="flex items-center gap-3">

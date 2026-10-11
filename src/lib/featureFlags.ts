@@ -18,3 +18,9 @@ export const SPOTIFY_ENABLED = import.meta.env.VITE_ENABLE_SPOTIFY === "true";
  */
 export const GOOGLE_CALENDAR_ENABLED =
   import.meta.env.VITE_ENABLE_GOOGLE_CALENDAR === "true";
+
+/**
+ * Projects screen. Still a stub, so its route and sidebar item are hidden
+ * unless `VITE_ENABLE_PROJECTS=true`.
+ */
+export const PROJECTS_ENABLED = import.meta.env.VITE_ENABLE_PROJECTS === "true";

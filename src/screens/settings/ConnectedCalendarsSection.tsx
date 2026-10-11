@@ -1,11 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import {
-    IoCalendarClear,
   IoCalendarOutline,
   IoDocumentTextOutline,
-  IoFileTray,
   IoLogoGoogle,
-  IoText,
 } from "react-icons/io5";
 import { Checkbox } from "@/components/base/checkbox/checkbox";
 import { GOOGLE_CALENDAR_ENABLED } from "@/lib/featureFlags";

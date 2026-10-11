@@ -23,7 +23,7 @@ import CalendarScreen from "./screens/CalendarScreen";
 import HelpScreen from "./screens/HelpScreen";
 import AppsScreen from "./screens/AppsScreen";
 import SpotifyScreen from "./screens/integrations/SpotifyScreen";
-import { SPOTIFY_ENABLED } from "./lib/featureFlags";
+import { PROJECTS_ENABLED, SPOTIFY_ENABLED } from "./lib/featureFlags";
 import ToolkitScreen from "./screens/ToolkitScreen";
 import ToolkitWindowScreen from "./screens/ToolkitWindowScreen";
 import PomodoroScreen from "./screens/pomodoro/PomodoroScreen";
@@ -162,14 +162,16 @@ export default function App() {
                 </AnimatedPage>
               }
             />
-            <Route
-              path="/projects/*"
-              element={
-                <AnimatedPage>
-                  <ProjectsScreen />
-                </AnimatedPage>
-              }
-            />
+            {PROJECTS_ENABLED && (
+              <Route
+                path="/projects/*"
+                element={
+                  <AnimatedPage>
+                    <ProjectsScreen />
+                  </AnimatedPage>
+                }
+              />
+            )}
             <Route
               path="/calendar/*"
               element={

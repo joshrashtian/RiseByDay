@@ -35,11 +35,14 @@ import {
 import { SidebarModeToggle } from "./sidebar/SidebarModeToggle";
 import { sidebarTokens } from "./sidebar/sidebarTokens";
 import { listen } from "@tauri-apps/api/event";
+import { PROJECTS_ENABLED } from "@/lib/featureFlags";
 
 const taskDefaultNavItems: SidebarNavItem[] = [
   { label: "Home", icon: <IoHomeOutline />, link: "/" },
   { label: "Tasks", icon: <IoListOutline />, link: "/tasks" },
-  { label: "Projects", icon: <IoFolderOutline />, link: "/projects" },
+  ...(PROJECTS_ENABLED
+    ? [{ label: "Projects", icon: <IoFolderOutline />, link: "/projects" }]
+    : []),
   { label: "Calendar", icon: <IoCalendarOutline />, link: "/calendar" },
   { label: "Pomodoro", icon: <IoHourglassOutline />, link: "/pomodoro" },
 ];
