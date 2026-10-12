@@ -501,12 +501,59 @@
   font-display: swap;
 }
 
+/* Nippo — discrete weights for WKWebView */
+@font-face {
+  font-family: "Nippo";
+  src: url("./assets/fonts/Nippo_Complete/Fonts/WEB/fonts/Nippo-Extralight.woff2")
+    format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nippo";
+  src: url("./assets/fonts/Nippo_Complete/Fonts/WEB/fonts/Nippo-Light.woff2")
+    format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nippo";
+  src: url("./assets/fonts/Nippo_Complete/Fonts/WEB/fonts/Nippo-Regular.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nippo";
+  src: url("./assets/fonts/Nippo_Complete/Fonts/WEB/fonts/Nippo-Medium.woff2")
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nippo";
+  src: url("./assets/fonts/Nippo_Complete/Fonts/WEB/fonts/Nippo-Bold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: "Satoshi", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Google Sans Code", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display: "Soopafresh", "Satoshi", ui-sans-serif, sans-serif;
   --font-ppneue: "PP Neue Montreal", ui-sans-serif, system-ui, sans-serif;
   --font-eudoxus: "Eudoxus Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-nippo: "Nippo", ui-sans-serif, system-ui, sans-serif;
 }
 
 .logo.vite:hover {

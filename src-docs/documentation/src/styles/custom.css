@@ -1,0 +1,18 @@
+:root {
+  --sl-content-width: 50rem;
+  --sl-text-5xl: 3.5rem;
+}
+
+.sidebar-pane {
+
+    font-family: "Nippo";
+}
+
+kbd {
+    font-family: "Google Sans Code";
+
+}
+h1 {
+  font-family: "Satoshi";
+  font-weight: 900;
+}

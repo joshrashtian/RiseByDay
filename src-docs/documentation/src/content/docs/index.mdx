@@ -1,0 +1,31 @@
+---
+title: RiseByDay
+description: Plan your day in blocks, not lists.
+template: splash
+hero:
+  tagline: Plan your day in blocks, not lists.
+  actions:
+    - text: Get started
+      link: /guides/getting-started/
+      icon: right-arrow
+    - text: Keyboard shortcuts
+      link: /reference/shortcuts/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+	<Card title="Blocks" icon="seti:clock">
+		Split your day into named stretches of time. Home shows only what belongs to now.
+	</Card>
+	<Card title="Tasks" icon="pencil">
+		Add tasks with <kbd>⌘</kbd> <kbd>N</kbd>, or from any app with <kbd>⌥</kbd> <kbd>R</kbd>.
+	</Card>
+	<Card title="Calendar" icon="seti:calendar">
+		Import `.ics` events alongside your own tasks.
+	</Card>
+	<Card title="Pomodoro" icon="rocket">
+		A focus timer that lives next to your tasks.
+	</Card>
+</CardGrid>
