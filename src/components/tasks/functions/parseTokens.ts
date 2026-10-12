@@ -311,6 +311,16 @@ export function parseTaskChatInput(raw: string): TaskChatParse {
     resolvedEnd = resolvedEnd.plus({ days: 1 });
   }
 
+  // "@sat-sun" means the Sunday after Saturday, not the one before it.
+  while (
+    resolvedStart &&
+    resolvedEnd &&
+    resolvedEnd <= resolvedStart &&
+    endDueParts.dateIsWeekday
+  ) {
+    resolvedEnd = resolvedEnd.plus({ weeks: 1 });
+  }
+
   const dueDate = resolvedStart?.toJSDate();
   const endDate = resolvedEnd?.toJSDate();
 

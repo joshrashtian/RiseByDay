@@ -12,7 +12,7 @@ export const TIME_PARSE_FORMATS = [
 
 export type ParsedDueToken =
   | { kind: "time"; hour: number; minute: number; label: string }
-  | { kind: "date"; date: DateTime; label: string }
+  | { kind: "date"; date: DateTime; label: string; weekday?: boolean }
   | { kind: "datetime"; dateTime: DateTime; label: string };
 
 export type ParsedDueRangeToken = {
@@ -22,6 +22,8 @@ export type ParsedDueRangeToken = {
 
 export type DueParts = {
   date?: DateTime;
+  /** The date came from a weekday name, so it may roll forward a week. */
+  dateIsWeekday?: boolean;
   time?: { hour: number; minute: number };
   dateTime?: DateTime;
 };
@@ -40,6 +42,28 @@ export function parseTimeToken(
     }
   }
   return undefined;
+}
+
+// Luxon weekday numbers: Monday = 1 … Sunday = 7.
+const WEEKDAY_NAMES: Record<string, number> = {
+  mon: 1, monday: 1,
+  tue: 2, tues: 2, tuesday: 2,
+  wed: 3, weds: 3, wednesday: 3,
+  thu: 4, thur: 4, thurs: 4, thursday: 4,
+  fri: 5, friday: 5,
+  sat: 6, saturday: 6,
+  sun: 7, sunday: 7,
+};
+
+/** Next occurrence of a named weekday (today counts), at start of day. */
+export function parseWeekdayToken(
+  value: string,
+  now: DateTime = DateTime.now().setZone("local"),
+): DateTime | undefined {
+  const weekday = WEEKDAY_NAMES[value.trim().toLowerCase()];
+  if (!weekday) return undefined;
+  const daysAhead = (weekday - now.weekday + 7) % 7;
+  return now.plus({ days: daysAhead }).startOf("day");
 }
 
 export function parseDueTokenArg(arg: string): ParsedDueToken | undefined {
@@ -67,6 +91,16 @@ export function parseDueTokenArg(arg: string): ParsedDueToken | undefined {
   }
   if (lower === "tonight") {
     return { kind: "time", hour: 18, minute: 0, label: "Time: 6:00 PM" };
+  }
+
+  const weekday = parseWeekdayToken(lower, now);
+  if (weekday) {
+    return {
+      kind: "date",
+      date: weekday,
+      label: `Date: ${weekday.toFormat("EEE d MMM")}`,
+      weekday: true,
+    };
   }
 
   const asTime = parseTimeToken(trimmed);
@@ -191,7 +225,7 @@ export function applyDueToken(
     return { ...target, dateTime: parsed.dateTime };
   }
   if (parsed.kind === "date") {
-    return { ...target, date: parsed.date };
+    return { ...target, date: parsed.date, dateIsWeekday: parsed.weekday };
   }
   return {
     ...target,
@@ -255,6 +289,13 @@ export function parseChatDueArg(arg: string): Date | undefined {
   if (lower === "tonight") {
     return now
       .set({ hour: 18, minute: 0, second: 0, millisecond: 0 })
+      .toJSDate();
+  }
+
+  const weekday = parseWeekdayToken(lower, now);
+  if (weekday) {
+    return weekday
+      .set({ hour: 23, minute: 59, second: 0, millisecond: 0 })
       .toJSDate();
   }
 
