@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import { fileURLToPath } from 'node:url';
+import starlightThemeBlack from 'starlight-theme-black'
 
 // The docs load the app's fonts from <repo>/src/assets/fonts.
 const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
@@ -13,12 +14,14 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-      title: 'DayByDay',
+      title: 'RiseByDay',
       customCss: [
         "./src/styles/fonts.css",
         "./src/styles/custom.css"
-      ]
-      ,
+      ],
+      plugins: [
+
+      ],
 			sidebar: [
 				{
 					label: 'Guides',
