@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "untitled",
+  "name": "Untitled",
+  "author": "Joshua Rashtian",
+  "version": "1.0.0",
+  "description": "Ride high Mustangs!",
+  "appearance": "both",
+  "colors": {
+    "light": {
+      "canvas":  "#F7F3EA",
+      "surface": "#FFFDF8",
+      "raised":  "#FFFFFF",
+      "sunken":  "#EFE9DC",
+
+      "ink":   "#2B2620",
+      "muted": "#6B6157",
+      "faint": "#A39A8E",
+
+      "line":        "#E4DCCC",
+      "line-strong": "#CFC4B0",
+
+      "accent":       "#9A3412",
+      "accent-hover": "#7C2D12",
+      "accent-ink":   "#FFFDF8",
+
+      "secondary": "#3F6212",
+
+      "danger":  "#B42318",
+      "success": "#2F6B4F",
+      "warn":    "#B45309",
+
+      "overlay": "rgba(43, 38, 32, 0.4)"
+    },
+    "dark": {
+      "canvas":  "#1A1714",
+      "surface": "#23201B",
+      "raised":  "#2D2923",
+      "sunken":  "#161310",
+
+      "ink":   "#F1EBE0",
+      "muted": "#B3A998",
+      "faint": "#7D7466",
+
+      "line":        "#3A342C",
+      "line-strong": "#4A4238",
+
+      "accent":       "#FDBA74",
+      "accent-hover": "#FED7AA",
+      "accent-ink":   "#1A1714",
+
+      "secondary": "#A3C76B",
+
+      "danger":  "#F07167",
+      "success": "#6FBF97",
+      "warn":    "#E0A458",
+
+      "overlay": "rgba(0, 0, 0, 0.6)"
+    }
+  },
+  "components": {
+    "light": {
+      "sidebar-bg":         "#2B2620",
+      "sidebar-ink":        "#CFC4B0",
+      "sidebar-ink-active": "#FFFDF8",
+      "sidebar-item-hover": "rgba(255, 255, 255, 0.08)",
+      "sidebar-line":       "#3A342C"
+    }
+  }
+}
