@@ -5,7 +5,6 @@ import {
   type ListeningSession,
 } from "@/lib/integrations/spotify/history";
 import { Tooltip, TooltipTrigger } from "../../base/tooltip/tooltip";
-import { SiSpotify } from "react-icons/si";
 import { BsSpotify } from "react-icons/bs";
 
 const MINUTES_PER_DAY = 24 * 60;
@@ -29,7 +28,7 @@ function sessionTooltip(session: ListeningSession) {
   return {
     title: `${session.start.toFormat("h:mm a")} – ${session.end.toFormat("h:mm a")} · ${formatListeningDuration(summary.totalMs)}`,
     description: (
-      <span className="flex flex-col bg-wh gap-0.5">
+      <span className="flex flex-col gap-0.5">
         {shown.map((play) => (
           <span key={play.playedAt} className="block font-mono truncate">
             {play.title} — {play.artists}
@@ -91,7 +90,6 @@ export function SpotifySessionRail({
                 backgroundColor: SPOTIFY_GREEN,
               }}
             />
-            <SiSpotify className="text-white" />
           </Tooltip>
         );
       })}

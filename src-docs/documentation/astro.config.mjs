@@ -29,7 +29,10 @@ export default defineConfig({
 				},
 				{
 					label: 'Using the App',
-					items: [{ label: 'Add a Task', slug: 'app/addtask' }],
+					items: [
+						{ label: 'Add a Task', slug: 'app/addtask' },
+						{ label: 'Color Themes', slug: 'app/themes' },
+					],
 				},
 				{
 					label: 'Tasks',

@@ -8,6 +8,7 @@ import {
   type MotionLevel,
 } from "@/stores/settingsStore";
 import type { ThemePreference } from "@/lib/appTheme";
+import { ColorThemePicker } from "./ColorThemePicker";
 
 const OPTIONS: {
   id: ThemePreference;
@@ -110,6 +111,8 @@ export function AppearanceSection() {
         </Container.Body>
       </Container>
 
+      <ColorThemePicker />
+
       <Container>
         <Container.Header icon={<IoSparkles />} heading="Motion" />
         <Container.Body className="px-4 py-4">
@@ -164,3 +167,4 @@ export function AppearanceSection() {
     </div>
   );
 }
+

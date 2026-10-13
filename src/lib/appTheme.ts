@@ -50,7 +50,7 @@ export function watchSystemTheme(onChange: () => void): () => void {
   return () => query.removeEventListener("change", onChange);
 }
 
-const SETTINGS_STORAGE_KEY = "risebyday-settings";
+export const SETTINGS_STORAGE_KEY = "risebyday-settings";
 
 /**
  * Reads the persisted preference straight out of localStorage so the class is

@@ -356,9 +356,9 @@ const SideBar = ({
             <motion.nav
               key="sidebar-nav"
               aria-label="Primary navigation"
-              className={`relative flex h-full justify-between flex-col overflow-hidden pt-9 pb-3 bg-zinc-200/80 dark:bg-zinc-950/10 ${
+              className={`relative flex h-full justify-between flex-col overflow-hidden pt-9 pb-3 ${
                 isRail ? "px-2" : "px-3"
-              } ${sidebarTokens.surface} border-r border-line`}
+              } ${sidebarTokens.surface} border-r border-sidebar-line`}
               style={{ width: resolvedWidth }}
               initial={{ x: -24 }}
               animate={{ x: 0 }}

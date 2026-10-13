@@ -4,6 +4,7 @@ mod notis;
 mod oauth_loopback;
 mod open_cognition_macro;
 mod spotify_oauth;
+mod user_themes;
 
 use tauri::{
     menu::{AboutMetadata, AboutMetadataBuilder, MenuBuilder, MenuItemBuilder, SubmenuBuilder},
@@ -32,7 +33,11 @@ fn main() {
             notis::schedule_notification,
             notis::cancel_notification,
             notis::send_notification,
-            notis::sync_notifications
+            notis::sync_notifications,
+            user_themes::list_user_themes,
+            user_themes::save_user_theme,
+            user_themes::delete_user_theme,
+            user_themes::open_user_themes_folder
         ])
         .setup(|app| {
             notis::start_scheduler(app.handle().clone());

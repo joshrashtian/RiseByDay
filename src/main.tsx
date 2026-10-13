@@ -10,9 +10,13 @@ import { RightPanelProvider } from "./providers/RightPanelProvider";
 import GuideProvider from "./providers/GlobalHelpProvider";
 import { MotionPreferenceProvider } from "./providers/MotionPreferenceProvider";
 import { applyTheme, readPersistedThemePreference } from "./lib/appTheme";
+import { applyColorTheme, readPersistedColorTheme } from "./lib/colorThemes";
 
 // Before first paint, so the app never flashes light on a dark-mode launch.
+// The color theme must be applied here too: App.css holds no token values.
 applyTheme(readPersistedThemePreference());
+const persistedColorTheme = readPersistedColorTheme();
+applyColorTheme(persistedColorTheme.id, persistedColorTheme.customThemes);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

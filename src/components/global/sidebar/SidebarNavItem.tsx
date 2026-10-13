@@ -113,7 +113,7 @@ export function SidebarNavItemView({
       </span>
       {!showLabel && (
         <p
-          className={`fixed -translate-x-12  group-hover:translate-x-16 bg-zinc-200/10 text-sm font-bold px-5 border border-zinc-400/20 py-0.5 rounded-full font-sans duration-300 ease-in-out opacity-0 group-hover:opacity-100 `}
+          className={`fixed -translate-x-12  group-hover:translate-x-16 bg-popover text-ink text-sm font-bold px-5 border border-line py-0.5 rounded-full font-sans duration-300 ease-in-out opacity-0 group-hover:opacity-100 `}
         >
           {item.label}
         </p>

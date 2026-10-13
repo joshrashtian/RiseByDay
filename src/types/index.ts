@@ -237,3 +237,48 @@ export type SpotifyTokens = {
   expiresAt: number;
   scope: string;
 };
+
+// ── Color themes ────────────────────────────────────────────────────────────
+// The shape of a theme JSON file (see `src/themes/`). Values must be hex,
+// rgb()/rgba() or hsl()/hsla() so the same file can drive a React Native
+// client — no CSS variables, gradients or url().
+
+export type ColorThemeToken =
+  | "canvas" | "surface" | "raised" | "sunken"
+  | "ink" | "muted" | "faint"
+  | "line" | "line-strong"
+  | "accent" | "accent-hover" | "accent-soft" | "accent-ink"
+  | "secondary" | "secondary-soft"
+  | "danger" | "danger-soft" | "success" | "success-soft" | "warn" | "warn-soft"
+  | "overlay";
+
+/** Per-surface overrides. Each defaults to a base token in App.css. */
+export type ColorThemeComponentToken =
+  | "sidebar-bg" | "sidebar-ink" | "sidebar-ink-active"
+  | "sidebar-item-hover" | "sidebar-item-active" | "sidebar-line"
+  | "input-bg" | "input-line" | "input-focus"
+  | "card-bg" | "card-line"
+  | "popover-bg";
+
+export type ColorThemeAppearance = "light" | "dark" | "both";
+
+export type ColorThemeFile = {
+  schemaVersion: 1;
+  id: string;
+  name: string;
+  author?: string;
+  version?: string;
+  description?: string;
+  appearance: ColorThemeAppearance;
+  /** Theme id that supplies any token this file leaves out. */
+  extends?: string;
+  colors: {
+    light?: Partial<Record<ColorThemeToken, string>>;
+    dark?: Partial<Record<ColorThemeToken, string>>;
+  };
+  components?: {
+    light?: Partial<Record<ColorThemeComponentToken, string>>;
+    dark?: Partial<Record<ColorThemeComponentToken, string>>;
+  };
+  categoryPalette?: string[];
+};

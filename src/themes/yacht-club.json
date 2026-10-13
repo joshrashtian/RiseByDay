@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "id": "yacht-club",
+  "name": "Yacht Club",
+  "author": "RiseByDay",
+  "version": "1.0.0",
+  "description": "Warm off-white, harbour teal and saddle brown.",
+  "appearance": "both",
+  "colors": {
+    "light": {
+      "canvas": "#F2F0EF",
+      "surface": "#FBFAF9",
+      "raised": "#FFFFFF",
+      "sunken": "#E8E5E3",
+
+      "ink": "#1F1D1C",
+      "muted": "#5F6366",
+      "faint": "#8A8E90",
+
+      "line": "#DEDBD9",
+      "line-strong": "#BBBDBC",
+
+      "accent": "#245F73",
+      "accent-hover": "#1C4C5C",
+      "accent-soft": "rgba(36, 95, 115, 0.1)",
+      "accent-ink": "#FFFFFF",
+
+      "secondary": "#733E24",
+      "secondary-soft": "rgba(115, 62, 36, 0.1)",
+
+      "danger": "#B42318",
+      "success": "#2F6B4F",
+      "warn": "#B45309",
+
+      "overlay": "rgba(31, 29, 28, 0.4)"
+    },
+    "dark": {
+      "canvas": "#121718",
+      "surface": "#1A2124",
+      "raised": "#222B2E",
+      "sunken": "#0E1213",
+
+      "ink": "#F2F0EF",
+      "muted": "#A3A7A8",
+      "faint": "#6F7576",
+
+      "line": "#263033",
+      "line-strong": "#3A4547",
+
+      "accent": "#5FA3BA",
+      "accent-hover": "#7DB6C9",
+      "accent-soft": "rgba(95, 163, 186, 0.16)",
+      "accent-ink": "#0E1213",
+
+      "secondary": "#C07A55",
+      "secondary-soft": "rgba(192, 122, 85, 0.16)",
+
+      "danger": "#F07167",
+      "success": "#6FBF97",
+      "warn": "#E0A458",
+
+      "overlay": "rgba(0, 0, 0, 0.6)"
+    }
+  },
+  "components": {
+    "light": {
+      "sidebar-bg": "#E8E5E3"
+    },
+    "dark": {
+      "sidebar-bg": "#0E1213"
+    }
+  },
+  "categoryPalette": ["#245F73", "#733E24", "#2F6B4F", "#8A6A2E", "#6B4C7A"]
+}

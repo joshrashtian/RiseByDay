@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "classic",
+  "name": "Classic",
+  "author": "RiseByDay",
+  "version": "1.0.0",
+  "description": "The original zinc and blue.",
+  "appearance": "both",
+  "colors": {
+    "light": {
+      "canvas": "#FAFAFA",
+      "surface": "#FFFFFF",
+      "raised": "#FFFFFF",
+      "sunken": "#F4F4F5",
+
+      "ink": "#18181B",
+      "muted": "#71717A",
+      "faint": "#A1A1AA",
+
+      "line": "#E4E4E7",
+      "line-strong": "#D4D4D8",
+
+      "accent": "#2563EB",
+      "accent-hover": "#1D4ED8",
+      "accent-ink": "#FFFFFF",
+
+      "secondary": "#7C3AED",
+
+      "danger": "#DC2626",
+      "success": "#059669",
+      "warn": "#D97706",
+
+      "overlay": "rgba(9, 9, 11, 0.4)"
+    },
+    "dark": {
+      "canvas": "#09090B",
+      "surface": "#18181B",
+      "raised": "#27272A",
+      "sunken": "#131316",
+
+      "ink": "#FAFAFA",
+      "muted": "#A1A1AA",
+      "faint": "#71717A",
+
+      "line": "#27272A",
+      "line-strong": "#3F3F46",
+
+      "accent": "#3B82F6",
+      "accent-hover": "#60A5FA",
+      "accent-ink": "#FFFFFF",
+
+      "secondary": "#A78BFA",
+
+      "danger": "#F87171",
+      "success": "#34D399",
+      "warn": "#FBBF24",
+
+      "overlay": "rgba(0, 0, 0, 0.6)"
+    }
+  },
+  "components": {
+    "light": {
+      "sidebar-bg": "rgba(228, 228, 231, 0.8)"
+    },
+    "dark": {
+      "sidebar-bg": "rgba(9, 9, 11, 0.1)"
+    }
+  }
+}

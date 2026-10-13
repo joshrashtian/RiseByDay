@@ -36,6 +36,7 @@ import { PomodoroLinkedTaskSync } from "./components/global/PomodoroLinkedTaskSy
 import { TasksSyncEngine } from "./components/global/TasksSyncEngine";
 import { useAppZoom } from "./hooks/useAppZoom";
 import { useAppTheme } from "./hooks/useAppTheme";
+import { useUserThemesSync } from "./hooks/useUserThemesSync";
 import { useMenuNavigation } from "./hooks/useMenuNavigation";
 import { useCreateTaskAction } from "./hooks/useCreateTaskAction";
 import { useGoogleCalendarSync } from "./hooks/useGoogleCalendarSync";
@@ -63,6 +64,7 @@ export default function App() {
   useMenuNavigation();
   useAppZoom();
   useAppTheme();
+  useUserThemesSync();
   useCreateTaskAction();
   useGoogleCalendarSync();
   useTaskNotifications();

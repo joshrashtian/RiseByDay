@@ -6,6 +6,7 @@ import type {
   AudioPrefs,
   BlockConfig,
   CategoryConfig,
+  ColorThemeFile,
   CustomSound,
   ManualWeatherCoords,
 } from "@/types";
@@ -22,6 +23,12 @@ import {
   normalizeThemePreference,
   type ThemePreference,
 } from "@/lib/appTheme";
+import {
+  DEFAULT_COLOR_THEME_ID,
+  applyColorTheme,
+  findColorTheme,
+  normalizeCustomColorThemes,
+} from "@/lib/colorThemes";
 
 /**
  * How much the UI animates. "full" still follows the macOS Reduce Motion
@@ -58,6 +65,13 @@ type RightPanelState = {
 
 type SettingsState = {
   theme: ThemePreference;
+  /** Id of the active color theme (built-in or custom). */
+  colorTheme: string;
+  /**
+   * Valid themes from the user's themes folder, cached so the active one can
+   * be painted before the folder is read. See userThemesStore.
+   */
+  customColorThemes: ColorThemeFile[];
   dayTransitionEnabled: boolean;
   motionLevel: MotionLevel;
   zoomLevel: number;
@@ -71,6 +85,12 @@ type SettingsState = {
   categoryConfigs: CategoryConfig[];
 
   setTheme: (theme: ThemePreference) => void;
+  setColorTheme: (id: string) => void;
+  /** Replaces the cache after a folder scan. */
+  setCustomColorThemes: (themes: ColorThemeFile[]) => void;
+  /** Adds or replaces (by id) an imported theme and makes it active. */
+  addCustomColorTheme: (theme: ColorThemeFile) => void;
+  removeCustomColorTheme: (id: string) => void;
   setDayTransitionEnabled: (enabled: boolean) => void;
   setMotionLevel: (level: MotionLevel) => void;
   setZoomLevel: (level: number) => void;
@@ -249,6 +269,8 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
       theme: "system",
+      colorTheme: DEFAULT_COLOR_THEME_ID,
+      customColorThemes: [],
       dayTransitionEnabled:
         typeof window !== "undefined"
           ? !window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -268,6 +290,38 @@ export const useSettingsStore = create<SettingsState>()(
         applyTheme(theme);
         set({ theme });
       },
+      setColorTheme: (id) =>
+        set((s) => {
+          if (!findColorTheme(id, s.customColorThemes)) return s;
+          applyColorTheme(id, s.customColorThemes);
+          return { colorTheme: id };
+        }),
+      setCustomColorThemes: (customColorThemes) =>
+        set((s) => {
+          // The active theme's file was deleted or broke: fall back.
+          const colorTheme = findColorTheme(s.colorTheme, customColorThemes)
+            ? s.colorTheme
+            : DEFAULT_COLOR_THEME_ID;
+          applyColorTheme(colorTheme, customColorThemes);
+          return { customColorThemes, colorTheme };
+        }),
+      addCustomColorTheme: (theme) =>
+        set((s) => {
+          const customColorThemes = [
+            ...s.customColorThemes.filter((t) => t.id !== theme.id),
+            theme,
+          ];
+          applyColorTheme(theme.id, customColorThemes);
+          return { customColorThemes, colorTheme: theme.id };
+        }),
+      removeCustomColorTheme: (id) =>
+        set((s) => {
+          const customColorThemes = s.customColorThemes.filter((t) => t.id !== id);
+          const colorTheme =
+            s.colorTheme === id ? DEFAULT_COLOR_THEME_ID : s.colorTheme;
+          applyColorTheme(colorTheme, customColorThemes);
+          return { customColorThemes, colorTheme };
+        }),
       setDayTransitionEnabled: (enabled) =>
         set({ dayTransitionEnabled: enabled }),
       setMotionLevel: (level) =>
@@ -315,6 +369,8 @@ export const useSettingsStore = create<SettingsState>()(
       name: SETTINGS_STORAGE_KEY,
       partialize: (state) => ({
         theme: state.theme,
+        colorTheme: state.colorTheme,
+        customColorThemes: state.customColorThemes,
         dayTransitionEnabled: state.dayTransitionEnabled,
         motionLevel: state.motionLevel,
         zoomLevel: state.zoomLevel,
@@ -335,6 +391,11 @@ export const useSettingsStore = create<SettingsState>()(
             ...current,
             ...p,
             theme: normalizeThemePreference(p.theme),
+            colorTheme:
+              typeof p.colorTheme === "string"
+                ? p.colorTheme
+                : DEFAULT_COLOR_THEME_ID,
+            customColorThemes: normalizeCustomColorThemes(p.customColorThemes),
             motionLevel: normalizeMotionLevel(p.motionLevel),
             audioPrefs: normalizeSettingsAudio(p.audioPrefs, customSounds),
           } as SettingsState;

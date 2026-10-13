@@ -19,31 +19,29 @@
  *   sunken  inputs, wells        line    borders and dividers
  */
 :root {
-  --canvas: #fafafa;
-  --surface: #ffffff;
-  --raised: #ffffff;
-  --sunken: #f4f4f5;
+  /*
+   * Base token values (canvas, ink, accent, …) are not set here. They come
+   * from the active theme JSON in src/themes/, injected by
+   * src/lib/colorThemes.ts before first paint.
+   *
+   * Component tokens default to a base token; a theme can override any of
+   * them under "components" (e.g. a dark sidebar on a light app).
+   */
+  --sidebar-bg: var(--sunken);
+  --sidebar-ink: var(--muted);
+  --sidebar-ink-active: var(--ink);
+  --sidebar-item-hover: var(--line);
+  --sidebar-item-active: transparent;
+  --sidebar-line: var(--line);
 
-  --ink: #18181b;
-  --muted: #71717a;
-  --faint: #a1a1aa;
+  --input-bg: var(--sunken);
+  --input-line: var(--line);
+  --input-focus: var(--accent);
 
-  --line: #e4e4e7;
-  --line-strong: #d4d4d8;
+  --card-bg: var(--surface);
+  --card-line: var(--line);
 
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: rgb(37 99 235 / 0.1);
-  --accent-ink: #ffffff;
-
-  --danger: #dc2626;
-  --danger-soft: rgb(220 38 38 / 0.1);
-  --success: #059669;
-  --success-soft: rgb(5 150 105 / 0.1);
-  --warn: #d97706;
-  --warn-soft: rgb(217 119 6 / 0.1);
-
-  --overlay: rgb(9 9 11 / 0.4);
+  --popover-bg: var(--raised);
 
   /* Time-of-day tints for the Blocks screen rows. */
   --block-tint-morning: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 45%, #ede9fe 100%);
@@ -51,32 +49,6 @@
 }
 
 .dark {
-  --canvas: #09090b;
-  --surface: #18181b;
-  --raised: #27272a;
-  --sunken: #131316;
-
-  --ink: #fafafa;
-  --muted: #a1a1aa;
-  --faint: #71717a;
-
-  --line: #27272a;
-  --line-strong: #3f3f46;
-
-  --accent: #3b82f6;
-  --accent-hover: #60a5fa;
-  --accent-soft: rgb(59 130 246 / 0.16);
-  --accent-ink: #ffffff;
-
-  --danger: #f87171;
-  --danger-soft: rgb(248 113 113 / 0.16);
-  --success: #34d399;
-  --success-soft: rgb(52 211 153 / 0.16);
-  --warn: #fbbf24;
-  --warn-soft: rgb(251 191 36 / 0.16);
-
-  --overlay: rgb(0 0 0 / 0.6);
-
   --block-tint-morning: linear-gradient(
     135deg,
     rgb(12 74 110 / 0.4) 0%,
@@ -113,6 +85,9 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
 
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
+
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-success: var(--success);
@@ -121,6 +96,22 @@
   --color-warn-soft: var(--warn-soft);
 
   --color-overlay: var(--overlay);
+
+  --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-ink: var(--sidebar-ink);
+  --color-sidebar-ink-active: var(--sidebar-ink-active);
+  --color-sidebar-item-hover: var(--sidebar-item-hover);
+  --color-sidebar-item-active: var(--sidebar-item-active);
+  --color-sidebar-line: var(--sidebar-line);
+
+  --color-input: var(--input-bg);
+  --color-input-line: var(--input-line);
+  --color-input-focus: var(--input-focus);
+
+  --color-card: var(--card-bg);
+  --color-card-line: var(--card-line);
+
+  --color-popover: var(--popover-bg);
 }
 
 @layer utilities {

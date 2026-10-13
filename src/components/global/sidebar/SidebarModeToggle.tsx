@@ -30,7 +30,7 @@ export function SidebarModeToggle({
       <button
         type="button"
         onClick={() => setSidebarMode(getNextSidebarMode(sidebarMode))}
-        className="inline-flex h-9 w-full bg-zinc-300/50 items-center justify-center rounded-lg text-base text-muted transition-colors hover:bg-zinc-500/10"
+        className="inline-flex h-9 w-full bg-sidebar-item-hover items-center justify-center rounded-lg text-base text-sidebar-ink transition-colors hover:text-sidebar-ink-active"
         aria-label="Toggle navigation mode"
         title="Toggle navigation mode"
       >
@@ -49,7 +49,7 @@ export function SidebarModeToggle({
           className={`inline-flex h-9 items-center justify-center rounded-lg text-base transition-colors ${
             sidebarMode === id
               ? "bg-ink text-surface"
-              : "text-muted hover:bg-zinc-500/10 hover:text-ink"
+              : "text-sidebar-ink hover:bg-sidebar-item-hover hover:text-sidebar-ink-active"
           }`}
           aria-pressed={sidebarMode === id}
         >
