@@ -23,6 +23,21 @@ import {
   type ThemePreference,
 } from "@/lib/appTheme";
 
+/**
+ * How much the UI animates. "full" still follows the macOS Reduce Motion
+ * setting; "minimal" keeps fades but drops movement; "none" makes every
+ * change instant.
+ */
+type MotionLevel = "none" | "minimal" | "full";
+
+const MOTION_LEVELS: readonly MotionLevel[] = ["none", "minimal", "full"];
+
+function normalizeMotionLevel(level: unknown): MotionLevel {
+  return MOTION_LEVELS.includes(level as MotionLevel)
+    ? (level as MotionLevel)
+    : "full";
+}
+
 type SidebarMode = "tasks" | "social" | "apps";
 
 type SidebarState = {
@@ -44,6 +59,7 @@ type RightPanelState = {
 type SettingsState = {
   theme: ThemePreference;
   dayTransitionEnabled: boolean;
+  motionLevel: MotionLevel;
   zoomLevel: number;
   sidebar: SidebarState;
   rightPanel: RightPanelState;
@@ -56,6 +72,7 @@ type SettingsState = {
 
   setTheme: (theme: ThemePreference) => void;
   setDayTransitionEnabled: (enabled: boolean) => void;
+  setMotionLevel: (level: MotionLevel) => void;
   setZoomLevel: (level: number) => void;
   setSidebar: (state: Partial<SidebarState>) => void;
   setRightPanel: (state: Partial<RightPanelState>) => void;
@@ -236,6 +253,7 @@ export const useSettingsStore = create<SettingsState>()(
         typeof window !== "undefined"
           ? !window.matchMedia("(prefers-reduced-motion: reduce)").matches
           : true,
+      motionLevel: "full",
       zoomLevel: 1,
       sidebar: DEFAULT_SIDEBAR,
       rightPanel: DEFAULT_RIGHT_PANEL,
@@ -252,6 +270,8 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setDayTransitionEnabled: (enabled) =>
         set({ dayTransitionEnabled: enabled }),
+      setMotionLevel: (level) =>
+        set({ motionLevel: normalizeMotionLevel(level) }),
       setZoomLevel: (level) => set({ zoomLevel: clampAppZoom(level) }),
       setSidebar: (partial) =>
         set((s) => ({ sidebar: { ...s.sidebar, ...partial } })),
@@ -296,6 +316,7 @@ export const useSettingsStore = create<SettingsState>()(
       partialize: (state) => ({
         theme: state.theme,
         dayTransitionEnabled: state.dayTransitionEnabled,
+        motionLevel: state.motionLevel,
         zoomLevel: state.zoomLevel,
         sidebar: state.sidebar,
         rightPanel: state.rightPanel,
@@ -314,6 +335,7 @@ export const useSettingsStore = create<SettingsState>()(
             ...current,
             ...p,
             theme: normalizeThemePreference(p.theme),
+            motionLevel: normalizeMotionLevel(p.motionLevel),
             audioPrefs: normalizeSettingsAudio(p.audioPrefs, customSounds),
           } as SettingsState;
         }
@@ -341,4 +363,5 @@ if (typeof window !== "undefined") {
   });
 }
 
-export type { RightPanelState, SidebarMode, SidebarState };
+export { MOTION_LEVELS };
+export type { MotionLevel, RightPanelState, SidebarMode, SidebarState };

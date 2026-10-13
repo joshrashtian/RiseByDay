@@ -39,6 +39,7 @@ import {
 } from "./commandbar/categoryHelpers";
 import { CategoryPicker } from "./commandbar/CategoryPicker";
 import { isCalendarGridPath } from "../../lib/calendarRoutes";
+import { segmentTaskInput, type TaskTokenKind } from "../../lib/taskTokenSegments";
 
 const TOKEN_HINT_KEYS = new Set([
   "due",
@@ -48,6 +49,19 @@ const TOKEN_HINT_KEYS = new Set([
   "priority",
   "critical",
 ]);
+
+// Text versions of the token pill colours below, readable on the light and dark surface.
+const TOKEN_TEXT_COLORS: Record<TaskTokenKind, string> = {
+  due: "text-accent",
+  tag: "text-emerald-600 dark:text-emerald-400",
+  category: "text-teal-600 dark:text-teal-400",
+  block: "text-violet-600 dark:text-violet-400",
+  priority: "text-amber-600 dark:text-amber-400",
+  critical: "text-rose-600 dark:text-rose-400",
+};
+
+// Shared by the input and its highlight mirror so the glyphs line up exactly.
+const INPUT_TEXT_CLASSES = "w-full text-sm whitespace-pre";
 
 function buildSummary(parsed: TaskChatParse): string {
   const parts: string[] = [];
@@ -177,6 +191,7 @@ export function TaskCalendarCommandBar({
   const location = useLocation();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const mirrorRef = useRef<HTMLDivElement>(null);
   const [raw, setRaw] = useState("");
   const [manualMode, setManualMode] = useState<Mode | null>(null);
   const [categoryDraft, setCategoryDraft] = useState("");
@@ -429,6 +444,13 @@ export function TaskCalendarCommandBar({
     }
   };
 
+  // The input scrolls horizontally once text overflows; keep the mirror in step.
+  const syncMirrorScroll = () => {
+    if (mirrorRef.current && inputRef.current)
+      mirrorRef.current.scrollLeft = inputRef.current.scrollLeft;
+  };
+  useEffect(syncMirrorScroll, [raw]);
+
   const trimmed = raw.trim();
   const isCommandInput = trimmed.startsWith("/");
   const isTaskInput = trimmed.length > 0 && !isCommandInput;
@@ -468,7 +490,7 @@ export function TaskCalendarCommandBar({
           />
         ) : null}
 
-        <div className=" rounded-2xl bg-surface/60 backdrop-blur-2xl shadow-[0_8px_36px_rgba(15,15,15,0.18)]">
+        <div className=" rounded-2xl border bg-surface/60 backdrop-blur-2xl drop-shadow-2xl">
           {(isTaskInput || isCommandInput) && (
             <div className="px-5 pt-4 pb-3">
               {isTaskInput && (
@@ -541,15 +563,35 @@ export function TaskCalendarCommandBar({
             className={`flex items-center gap-2 px-5 ${isTaskInput ? "border-t border-line py-3" : "py-3"}`}
           >
             {inputIcon}
-            <input
-              ref={inputRef}
-              value={raw}
-              onChange={(e) => setRaw(e.target.value)}
-              onKeyDown={onMainInputKeyDown}
-              placeholder="Type a task or command. Use /help."
-              className="min-w-0 flex-1 bg-transparent text-sm text-muted outline-none placeholder:text-faint"
-              aria-label="Global command input"
-            />
+            <div className="relative min-w-0 flex-1">
+              <div
+                ref={mirrorRef}
+                aria-hidden
+                className={`${INPUT_TEXT_CLASSES} pointer-events-none absolute inset-0 overflow-hidden text-muted`}
+              >
+                {isCommandInput
+                  ? raw
+                  : segmentTaskInput(raw).map((seg, i) => (
+                      <span
+                        key={i}
+                        className={seg.kind ? TOKEN_TEXT_COLORS[seg.kind] : undefined}
+                      >
+                        {seg.text}
+                      </span>
+                    ))}
+              </div>
+              <input
+                ref={inputRef}
+                value={raw}
+                onChange={(e) => setRaw(e.target.value)}
+                onKeyDown={onMainInputKeyDown}
+                onScroll={syncMirrorScroll}
+                onSelect={syncMirrorScroll}
+                placeholder="Task..."
+                className={`${INPUT_TEXT_CLASSES} relative block bg-transparent text-transparent caret-ink outline-none placeholder:text-faint`}
+                aria-label="Global command input"
+              />
+            </div>
             <button
               type="submit"
               disabled={!raw.trim() || (isTaskInput && !isUnderstood)}

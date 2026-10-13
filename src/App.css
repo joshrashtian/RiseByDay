@@ -685,3 +685,13 @@ button {
 .dark .task-popup-form [role="option"][data-selected] svg {
   color: rgb(244 244 245);
 }
+/* Appearance → Animations: None. Near-zero (not 0) durations so
+   transitionend / animationend listeners still fire. */
+html[data-motion="none"] *,
+html[data-motion="none"] *::before,
+html[data-motion="none"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

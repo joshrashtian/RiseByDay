@@ -194,6 +194,13 @@ export type PomodoroSessionRow = {
   focused_task_id: string | null;
 };
 
+/** `follows`. One row per one-way follow; written through the API. */
+export type FollowRow = {
+  follower_id: string;
+  following_id: string;
+  created_at: IsoTimestamp;
+};
+
 // ── Insert / Update shapes ────────────────────────────────────────────────
 // Columns with a database default are optional on insert; `user_id` defaults
 // to auth.uid(), so it can be omitted when the caller is the owner.
@@ -257,6 +264,8 @@ export type PomodoroSessionInsert = Defaulted<
   "id" | "user_id" | "created_at" | "end_time" | "focused_task_id"
 >;
 
+export type FollowInsert = Defaulted<FollowRow, "follower_id" | "created_at">;
+
 // ── Database (for createClient<Database>) ─────────────────────────────────
 
 type TableDef<Row, Insert> = {
@@ -281,6 +290,7 @@ export type Database = {
       >;
       calendar_sources: TableDef<CalendarSourceRow, CalendarSourceInsert>;
       pomodoro_sessions: TableDef<PomodoroSessionRow, PomodoroSessionInsert>;
+      follows: TableDef<FollowRow, FollowInsert>;
     };
     Views: {
       /** `tasks` filtered to `deleted_at is null`. Read-only. */

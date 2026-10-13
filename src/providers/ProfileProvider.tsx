@@ -10,6 +10,8 @@ export type Profile = {
   email: string;
   /** `profiles.full_name`; null when signed out or not set. */
   fullName?: string | null;
+  /** `profiles.username`; the public handle, null until picked. */
+  username?: string | null;
   avatarUrl?: string | null;
 };
 
@@ -23,7 +25,7 @@ export type ProfileStats = {
 
 type ProfileContextType = {
   profile: Profile | null;
-  setProfile: (profile: Profile | null) => void;
+  setProfile: React.Dispatch<React.SetStateAction<Profile | null>>;
   stats: ProfileStats;
 };
 
@@ -48,9 +50,11 @@ export const ProfileProvider = ({
     email: "soon@coming.com",
     avatarUrl: null,
   });
-  const tasks = useTasksStore((s) => s.tasks);
+  const allTasks = useTasksStore((s) => s.tasks);
 
   const stats = useMemo<ProfileStats>(() => {
+    // Imported calendar events aren't the user's own work, so they don't count.
+    const tasks = allTasks.filter((t) => t.kind !== "ics");
     const total = tasks.length;
     const completed = tasks.filter((t) => t.done).length;
     const open = total - completed;
@@ -67,7 +71,7 @@ export const ProfileProvider = ({
       completionRateLabel: `${rate}%`,
       categoriesCount: categories,
     };
-  }, [tasks]);
+  }, [allTasks]);
 
   const value = useMemo(
     () => ({ profile, setProfile, stats }),
@@ -88,7 +92,7 @@ export const ProfileProvider = ({
     let cancelled = false;
     supabase
       .from("profiles")
-      .select("full_name, avatar_url")
+      .select("full_name, username, avatar_url")
       .eq("id", authUser.id)
       .maybeSingle()
       .then(({ data, error }) => {
@@ -98,6 +102,7 @@ export const ProfileProvider = ({
             ? {
                 ...prev,
                 fullName: data.full_name,
+                username: data.username,
                 // Keep the auth-metadata avatar when the row has none.
                 avatarUrl: resolveAvatarUrl(data.avatar_url) ?? prev.avatarUrl,
               }

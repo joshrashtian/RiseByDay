@@ -1,4 +1,4 @@
-import { useAnimation, useReducedMotion } from "motion/react";
+import { useAnimation, useReducedMotionConfig } from "motion/react";
 import {
   useEffect,
   useMemo,
@@ -110,7 +110,7 @@ export default function BottomSheet({
   const dragControls = useDragControls();
   // Controls only the drag-layer's y — lets us reset to 0 after every release.
   const dragY = useAnimation();
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionConfig();
 
   const panelRef = useRef<HTMLDivElement>(null);
   // The element that had focus before the sheet opened, to restore on close.

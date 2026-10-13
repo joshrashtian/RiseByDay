@@ -12,6 +12,7 @@ import {
   IoListOutline,
   IoPeople,
   IoPersonOutline,
+  IoSearchOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
 import { NavLink, useLocation } from "react-router-dom";
@@ -52,6 +53,16 @@ const socialDefaultNavItems: SidebarNavItem[] = [
     label: "My Circle",
     icon: <IoPeople />,
     link: "/social/home",
+  },
+  {
+    label: "Search",
+    icon: <IoSearchOutline />,
+    link: "/social/search",
+  },
+  {
+    label: "Profile",
+    icon: <IoPersonOutline />,
+    link: "/social/profile",
   },
 ];
 

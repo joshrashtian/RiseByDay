@@ -28,6 +28,9 @@ type TasksState = {
   pendingCreateIds: string[];
   /** ISO timestamp of the last successful Supabase pull. */
   lastPulledAt: string | null;
+  /** Account the local tasks and sync cursors belong to; null until the first
+   * sync (or for data persisted before this was tracked). */
+  syncedUserId: string | null;
   addTask: (payload: AddTaskPayload) => void;
   /** Nests a new task under `parentId`. Returns the new id, or undefined when
    * the title is empty or the parent can't take subtasks. */
@@ -49,6 +52,9 @@ type TasksState = {
   clearPendingDeletedIds: (ids: string[]) => void;
   clearPendingCreateIds: (ids: string[]) => void;
   setLastPulledAt: (iso: string) => void;
+  setSyncedUserId: (userId: string) => void;
+  /** Drops local tasks and sync state so `userId` starts from a fresh pull. */
+  resetForAccount: (userId: string) => void;
   upsertFromRemote: (task: Task) => void;
   removeFromRemote: (id: string) => void;
 };
@@ -196,6 +202,7 @@ export const useTasksStore = create<TasksState>()(
       pendingDeletedIds: [],
       pendingCreateIds: [],
       lastPulledAt: null,
+      syncedUserId: null,
 
       setTaskCategory: (taskId, category) =>
         set((s) => {
@@ -699,6 +706,17 @@ export const useTasksStore = create<TasksState>()(
 
       setLastPulledAt: (iso) => set({ lastPulledAt: iso }),
 
+      setSyncedUserId: (userId) => set({ syncedUserId: userId }),
+
+      resetForAccount: (userId) =>
+        set({
+          tasks: [],
+          pendingDeletedIds: [],
+          pendingCreateIds: [],
+          lastPulledAt: null,
+          syncedUserId: userId,
+        }),
+
       upsertFromRemote: (task) =>
         set((s) => {
           // An event imported on two devices (or before the first pull) gets a
@@ -727,6 +745,7 @@ export const useTasksStore = create<TasksState>()(
         pendingDeletedIds: state.pendingDeletedIds,
         pendingCreateIds: state.pendingCreateIds,
         lastPulledAt: state.lastPulledAt,
+        syncedUserId: state.syncedUserId,
       }),
       merge: (persisted, current) => {
         const p = persisted as Partial<{
@@ -735,6 +754,7 @@ export const useTasksStore = create<TasksState>()(
           pendingDeletedIds: string[];
           pendingCreateIds: string[];
           lastPulledAt: string | null;
+          syncedUserId: string | null;
         }>;
         const base = current as TasksState;
         const rawTasks = p?.tasks;
@@ -751,6 +771,7 @@ export const useTasksStore = create<TasksState>()(
             ? p.pendingCreateIds
             : base.pendingCreateIds,
           lastPulledAt: typeof p?.lastPulledAt === "string" ? p.lastPulledAt : null,
+          syncedUserId: typeof p?.syncedUserId === "string" ? p.syncedUserId : null,
         };
       },
     },

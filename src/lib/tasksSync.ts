@@ -192,6 +192,22 @@ async function pullRemoteChanges(userId: string) {
   useTasksStore.getState().setLastPulledAt(pullTime);
 }
 
+/** Local tasks belong to one account. Pushing another account's tasks under
+ * this user's id would upsert rows RLS won't let us touch, failing every sync,
+ * so a different account starts over from a fresh pull. Data that has never
+ * synced (no owner, no pull cursor) is local-only and is adopted instead. */
+function claimLocalTasksFor(userId: string) {
+  const { syncedUserId, lastPulledAt, setSyncedUserId, resetForAccount } =
+    useTasksStore.getState();
+  if (syncedUserId === userId) return;
+  if (syncedUserId === null && lastPulledAt === null) {
+    setSyncedUserId(userId);
+    return;
+  }
+  resetForAccount(userId);
+  lastPushedAt = 0;
+}
+
 /** Syncs categories and blocks, then pushes local task changes to Supabase and pulls
  * remote changes down. Configs go first so tasks pulled from another device
  * arrive with the categories and blocks they reference.
@@ -212,6 +228,7 @@ export async function syncNow() {
   isSyncing = true;
   setStatus("syncing");
   try {
+    claimLocalTasksFor(userId);
     // A config failure shouldn't hold up tasks; it's retried next sync.
     let configsSynced = true;
     for (const [label, syncConfig] of [

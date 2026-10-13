@@ -29,7 +29,6 @@ import ToolkitWindowScreen from "./screens/ToolkitWindowScreen";
 import PomodoroScreen from "./screens/pomodoro/PomodoroScreen";
 import ProjectsScreen from "./screens/ProjectsScreen";
 import CognitionBar from "./ui/CognitionBar";
-import { GlobalPomodoroDock } from "./components/global/GlobalPomodoroDock";
 import { TaskDragGhost } from "./components/global/TaskDragGhost";
 import { TopBreadcrumbBar } from "./components/global/TopBreadcrumbBar";
 import { PomodoroTicker } from "./components/global/PomodoroTicker";
@@ -43,6 +42,8 @@ import { useGoogleCalendarSync } from "./hooks/useGoogleCalendarSync";
 import { useTaskNotifications } from "./hooks/useTaskNotifications";
 import { useRightPanel } from "./providers/RightPanelProvider";
 import SocialScreen from "./screens/social/SocialScreen";
+import ProfileScreen from "./screens/social/ProfileScreen";
+import SearchScreen from "./screens/social/SearchScreen";
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 
@@ -233,6 +234,30 @@ export default function App() {
                 </AnimatedPage>
               }
             />
+            <Route
+              path="/social/search"
+              element={
+                <AnimatedPage>
+                  <SearchScreen />
+                </AnimatedPage>
+              }
+            />
+            <Route
+              path="/social/profile"
+              element={
+                <AnimatedPage>
+                  <ProfileScreen />
+                </AnimatedPage>
+              }
+            />
+            <Route
+              path="/social/profile/:userId"
+              element={
+                <AnimatedPage>
+                  <ProfileScreen />
+                </AnimatedPage>
+              }
+            />
           </Routes>
           {showSettingsModal ? (
             <div
@@ -269,14 +294,7 @@ export default function App() {
         <PomodoroTicker />
         <PomodoroLinkedTaskSync />
         <TasksSyncEngine />
-        <GlobalPomodoroDock rightInset={rightPanelCover} />
         <TaskDragGhost />
-        <code
-          className="fixed bottom-12 font-mono z-999"
-          style={{ right: rightPanelCover + 16 }}
-        >
-          public alpha 2
-        </code>
       </motion.div>
     </div>
   );
