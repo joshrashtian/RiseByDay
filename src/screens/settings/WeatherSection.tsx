@@ -7,6 +7,7 @@ import {
 import { IoLocationOutline } from "react-icons/io5";
 import Container from "@/ui/settings/Container";
 import SettingsHeader from "@/ui/settings/Header";
+import Button from "@/ui/Button";
 
 export function WeatherSection() {
   const uid = useId();
@@ -147,20 +148,19 @@ export function WeatherSection() {
         </Container.Body>
 
       <Container.Footer className="justify-start px-4">
-        <button
+        <Button
           type="button"
           onClick={onSaveWeatherLocation}
-          className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           Save Coordinates
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           onClick={onUseDeviceLocation}
-          className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          styling="bordered"
         >
           Use device location
-        </button>
+        </Button>
       </Container.Footer>
       </Container>
     </div>

@@ -14,6 +14,7 @@ import {
 import { useTasksStore } from "@/stores/tasksStore";
 import Container from "@/ui/settings/Container";
 import SettingsHeader from "@/ui/settings/Header";
+import Button from "@/ui/Button";
 
 function CalendarColorDot({ color }: { color?: string }) {
   return (
@@ -232,23 +233,22 @@ export function ConnectedCalendarsSection() {
           />
 
           <div className="flex flex-wrap gap-2">
-            <button
+            <Button
               type="button"
               onClick={onChooseIcsFile}
               disabled={isImportingIcs}
-              className="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
             >
               <IoDocumentTextOutline className="size-4" aria-hidden />
               {isImportingIcs ? "Importing…" : "Choose .ics file"}
-            </button>
+            </Button>
             {icsTaskCount > 0 ? (
-              <button
+              <Button
                 type="button"
                 onClick={onClearIcsImports}
-                className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                styling="bordered"
               >
                 Remove all ICS imports
-              </button>
+              </Button>
             ) : null}
           </div>
           </div>
@@ -276,22 +276,21 @@ export function ConnectedCalendarsSection() {
             </div>
 
             {google.connected ? (
-              <button
+              <Button
                 type="button"
                 onClick={onDisconnectGoogle}
-                className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                styling="bordered"
               >
                 Disconnect
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
                 type="button"
                 onClick={onConnectGoogle}
                 disabled={isGoogleConnecting}
-                className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
               >
                 {isGoogleConnecting ? "Waiting for Google…" : "Connect Google"}
-              </button>
+              </Button>
             )}
           </Container.Body>
 
@@ -371,15 +370,14 @@ export function ConnectedCalendarsSection() {
               </fieldset>
 
               <div className="flex flex-wrap gap-2">
-                <button
+                <Button
                   type="button"
                   onClick={onImport}
                   disabled={isImportingGoogle}
-                  className="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
                 >
                   <IoCalendarOutline className="size-4" aria-hidden />
                   {isImportingGoogle ? "Importing…" : "Import events"}
-                </button>
+                </Button>
               </div>
             </div>
           ) : null}

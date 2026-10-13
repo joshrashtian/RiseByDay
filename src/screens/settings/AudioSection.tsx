@@ -19,6 +19,7 @@ import {
 import { useSettingsStore } from "@/stores/settingsStore";
 import Container from "@/ui/settings/Container";
 import SettingsHeader from "@/ui/settings/Header";
+import Button from "@/ui/Button";
 
 export function AudioSection() {
   const uid = useId();
@@ -154,15 +155,15 @@ export function AudioSection() {
                       </optgroup>
                     ) : null}
                   </select>
-                  <button
+                  <Button
                     type="button"
                     onClick={() => previewTaskClickSound(selected)}
                     disabled={soundsDisabled || selected === NO_SOUND_ID}
                     aria-label={`Preview ${getTaskClickSoundLabel(selected, customSounds)} for ${label.toLowerCase()}`}
-                    className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50"
+                    styling="bordered"
                   >
                     Preview
-                  </button>
+                  </Button>
                 </div>
               </div>
             );
@@ -226,14 +227,13 @@ export function AudioSection() {
             onChange={onSoundFileSelected}
           />
 
-          <button
+          <Button
             type="button"
             onClick={onChooseSoundFile}
             disabled={isImporting}
-            className="rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
           >
             {isImporting ? "Importing…" : "Choose audio file"}
-          </button>
+          </Button>
 
           {customSounds.length > 0 ? (
             <ul className="space-y-2">
@@ -258,14 +258,14 @@ export function AudioSection() {
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <button
+                      <Button
                         type="button"
                         onClick={() => previewTaskClickSound(id)}
                         disabled={soundsDisabled}
-                        className="rounded-lg border border-line bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-sunken disabled:opacity-50"
+                        styling="bordered" className="px-3 py-1.5 text-xs"
                       >
                         Preview
-                      </button>
+                      </Button>
                       <button
                         type="button"
                         onClick={() => removeCustomSound(sound.id)}

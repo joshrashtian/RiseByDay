@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import {
+  IoAdd,
   IoCheckmarkCircle,
   IoColorPalette,
   IoFolderOpenOutline,
@@ -17,6 +18,7 @@ import {
 } from "@/lib/colorThemes";
 import { isTauri } from "@/lib/tauriEnv";
 import type { ColorThemeFile } from "@/types";
+import Button from "@/ui/Button";
 
 /**
  * Every available color theme as a list, each with a light and a dark
@@ -27,7 +29,7 @@ export function ColorThemePicker() {
   const colorTheme = useSettingsStore((s) => s.colorTheme);
   const customColorThemes = useSettingsStore((s) => s.customColorThemes);
   const setColorTheme = useSettingsStore((s) => s.setColorTheme);
-  const { dir, entries, loading, error, reload, importFile, deleteTheme, openFolder } =
+  const { dir, createTheme, entries, loading, error, reload, importFile, deleteTheme, openFolder } =
     useUserThemesStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importErrors, setImportErrors] = useState<string[]>([]);
@@ -124,23 +126,19 @@ export function ColorThemePicker() {
         ) : null}
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="rounded-lg border border-line-strong px-3 py-1.5 text-xs font-semibold text-ink hover:bg-sunken"
-          >
-            Import theme JSON
-          </button>
+
           {hasFolder ? (
             <>
-              <button
+              <Button
                 type="button"
                 onClick={() => void openFolder()}
-                className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-muted hover:bg-sunken hover:text-ink"
               >
                 <IoFolderOpenOutline aria-hidden />
                 Show themes folder
-              </button>
+              </Button>
+              <Button onClick={() => void createTheme()}>
+                <IoAdd /> Create New Template
+              </Button>
               <button
                 type="button"
                 onClick={() => void reload()}
@@ -166,17 +164,7 @@ export function ColorThemePicker() {
           />
         </div>
 
-        <p className="text-[11px] leading-snug text-muted">
-          {hasFolder ? (
-            <>
-              Drop <code className="font-mono">.json</code> theme files into{" "}
-              <code className="break-all font-mono text-ink">{dir ?? "your themes folder"}</code>.
-              The list refreshes when you come back to the app.
-            </>
-          ) : (
-            "Running outside the desktop app — imported themes are kept in settings only."
-          )}
-        </p>
+
 
         {importErrors.length > 0 || error ? (
           <ul className="space-y-0.5 rounded-lg bg-danger-soft px-3 py-2 text-[11px] text-danger">

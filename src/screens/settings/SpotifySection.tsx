@@ -18,11 +18,9 @@ import {
   IoPersonCircleOutline,
   IoTimeOutline,
 } from "react-icons/io5";
+import Button from "@/ui/Button";
 
 const SPOTIFY_DASHBOARD_URL = "https://developer.spotify.com/dashboard";
-
-const secondaryButton =
-  "inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-muted transition-colors hover:bg-sunken hover:text-ink disabled:opacity-50";
 
 function Step({
   n,
@@ -148,9 +146,14 @@ export function SpotifySection() {
             </div>
 
             {isConnected ? (
-              <button type="button" onClick={disconnect} className={secondaryButton}>
+              <Button
+                type="button"
+                onClick={disconnect}
+                styling="bordered"
+                className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold"
+              >
                 Disconnect
-              </button>
+              </Button>
             ) : (
               <button
                 type="button"
@@ -226,14 +229,15 @@ export function SpotifySection() {
                 : "Not updated yet"}
             </p>
             <div className="flex items-center gap-2">
-              <button
+              <Button
                 type="button"
                 onClick={() => void syncHistory()}
                 disabled={!isConnected}
-                className={secondaryButton}
+                styling="bordered"
+                className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold"
               >
                 Update now
-              </button>
+              </Button>
               <button
                 type="button"
                 onClick={clearHistory}
@@ -261,14 +265,15 @@ export function SpotifySection() {
                     ? "Already set up — nothing to do here."
                     : "Set up."}
               </p>
-              <button
+              <Button
                 type="button"
                 onClick={() => setShowGuide((v) => !v)}
                 aria-expanded={showGuide}
-                className={secondaryButton}
+                styling="bordered"
+                className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold"
               >
                 {showGuide ? "Hide steps" : "Use a different app"}
-              </button>
+              </Button>
             </div>
           )}
 
@@ -287,14 +292,15 @@ export function SpotifySection() {
                     <strong className="font-semibold text-ink">Create app</strong>,
                     and give it any name and description (e.g. "My RiseByDay").
                   </p>
-                  <button
+                  <Button
                     type="button"
                     onClick={() => void openUrl(SPOTIFY_DASHBOARD_URL)}
-                    className={secondaryButton}
+                    styling="bordered"
+                    className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold"
                   >
                     Open Spotify dashboard
                     <IoOpenOutline className="size-3.5" aria-hidden />
-                  </button>
+                  </Button>
                 </Step>
 
                 <Step n={2} title="Paste this address as the Redirect URI">
@@ -309,13 +315,14 @@ export function SpotifySection() {
                     <code className="min-w-0 flex-1 truncate rounded-lg bg-sunken px-3 py-2 font-mono text-xs text-ink">
                       {SPOTIFY_REDIRECT_URI}
                     </code>
-                    <button
+                    <Button
                       type="button"
                       onClick={() => void copyRedirectUri()}
-                      className={secondaryButton}
+                      styling="bordered"
+                      className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold"
                     >
                       {copied ? "Copied!" : "Copy"}
-                    </button>
+                    </Button>
                   </div>
                 </Step>
 
@@ -347,9 +354,9 @@ export function SpotifySection() {
                       autoComplete="off"
                       className="min-w-0 flex-1 rounded-lg border border-line bg-surface px-3 py-2 font-mono text-xs text-ink outline-none ring-accent/40 focus:ring-2"
                     />
-                    <button type="submit" className={secondaryButton}>
+                    <Button type="submit" styling="bordered" className="shrink-0 gap-1.5 px-3 py-1.5 text-xs font-semibold">
                       {saved ? "Saved!" : "Save"}
-                    </button>
+                    </Button>
                   </form>
                 </Step>
               </ol>

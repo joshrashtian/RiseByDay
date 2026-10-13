@@ -37,7 +37,8 @@ fn main() {
             user_themes::list_user_themes,
             user_themes::save_user_theme,
             user_themes::delete_user_theme,
-            user_themes::open_user_themes_folder
+            user_themes::open_user_themes_folder,
+            user_themes::create_new_theme,
         ])
         .setup(|app| {
             notis::start_scheduler(app.handle().clone());

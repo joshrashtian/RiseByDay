@@ -12,14 +12,12 @@ use serde::Serialize;
 use tauri::{AppHandle, Manager};
 use tauri_plugin_opener::OpenerExt;
 
-/// Generous for a palette file; anything bigger is not a theme.
 const MAX_THEME_BYTES: u64 = 256 * 1024;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserThemeFile {
     pub file_name: String,
-    /// `None` when the file couldn't be read (too large, not UTF-8, …).
     pub contents: Option<String>,
     pub error: Option<String>,
 }
@@ -67,6 +65,14 @@ fn read_theme(path: &Path) -> (Option<String>, Option<String>) {
     }
 }
 
+const THEME_TEMPLATE: &str = include_str!("sample_template.json");
+
+#[tauri::command]
+pub fn create_new_theme(app: AppHandle) -> Result<(), String> {
+    let dir = themes_dir(&app)?;
+    fs::write(dir.join("untitled-new-theme.json"), THEME_TEMPLATE).map_err(|e| e.to_string())
+}
+
 #[tauri::command]
 pub fn list_user_themes(app: AppHandle) -> Result<UserThemesListing, String> {
     let dir = themes_dir(&app)?;
@@ -78,7 +84,11 @@ pub fn list_user_themes(app: AppHandle) -> Result<UserThemesListing, String> {
             let file_name = entry.file_name().into_string().ok()?;
             safe_file_name(&file_name).ok()?;
             let (contents, error) = read_theme(&entry.path());
-            Some(UserThemeFile { file_name, contents, error })
+            Some(UserThemeFile {
+                file_name,
+                contents,
+                error,
+            })
         })
         .collect();
     files.sort_by(|a, b| a.file_name.cmp(&b.file_name));

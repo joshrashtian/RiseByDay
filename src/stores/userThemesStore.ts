@@ -8,16 +8,6 @@ import {
 import { useSettingsStore } from "@/stores/settingsStore";
 import type { ColorThemeFile } from "@/types";
 
-/**
- * The user's themes folder (`<app config dir>/themes/*.json`, see
- * src-tauri/src/user_themes.rs). The folder is the source of truth;
- * `settingsStore.customColorThemes` is a cache of its valid themes so the
- * active theme can be painted synchronously on launch, before the folder has
- * been read.
- *
- * Outside Tauri (plain `bun run dev` in a browser) there is no folder, and
- * imports fall back to living only in the settings store.
- */
 
 type ListingFile = { fileName: string; contents: string | null; error: string | null };
 type Listing = { dir: string; files: ListingFile[] };
@@ -34,7 +24,7 @@ type UserThemesState = {
   entries: UserThemeEntry[];
   loading: boolean;
   error: string | null;
-
+  createTheme: () => Promise<void>;
   /** Re-reads the folder and refreshes the settings-store cache. */
   reload: () => Promise<void>;
   /** Validates and copies a theme file into the folder. Returns errors, if any. */
@@ -90,6 +80,18 @@ export const useUserThemesStore = create<UserThemesState>()((set, get) => ({
     } catch (error) {
       set({ loading: false, error: String(error) });
     }
+  },
+
+  createTheme: async () => {
+    if (!isTauri()) return;
+    try {
+      await invoke("create_new_theme");
+    } catch (error) {
+      set({ error: String(error) });
+      return;
+    }
+    await get().reload();
+    useSettingsStore.getState().setColorTheme("untitled-new-theme");
   },
 
   importFile: async (file) => {

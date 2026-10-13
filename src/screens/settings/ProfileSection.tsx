@@ -9,6 +9,7 @@ import { AVATAR_ACCEPT, uploadAvatar } from "@/lib/cloud/avatars";
 import Container from "@/ui/settings/Container";
 import SettingsHeader from "@/ui/settings/Header";
 import { IoSync } from "react-icons/io5";
+import Button from "@/ui/Button";
 
 function AccountForm() {
   const uid = useId();
@@ -97,17 +98,16 @@ function AccountForm() {
       ) : null}
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
+        <Button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-60"
         >
           {isSubmitting
             ? "Please wait…"
             : mode === "signUp"
               ? "Create account"
               : "Sign in"}
-        </button>
+        </Button>
         <button
           type="button"
           onClick={() => {
@@ -304,13 +304,13 @@ export function ProfileSection() {
                 <span className="font-medium">{authUser?.email}</span>
               </p>
               <SyncStatusLine />
-              <button
+              <Button
                 type="button"
                 onClick={() => signOut()}
-                className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-sunken focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                styling="bordered"
               >
                 Sign out
-              </button>
+              </Button>
             </div>
           ) : (
             <AccountForm />
