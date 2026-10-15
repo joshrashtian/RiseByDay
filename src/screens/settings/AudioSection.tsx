@@ -1,9 +1,12 @@
-import { useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import {
+  IoFolderOpenOutline,
   IoMusicalNoteOutline,
+  IoRefresh,
   IoTrashOutline,
   IoVolumeHighOutline,
   IoVolumeMuteOutline,
+  IoWarningOutline,
 } from "react-icons/io5";
 import { Checkbox } from "@/components/base/checkbox/checkbox";
 import {
@@ -11,52 +14,41 @@ import {
   NO_SOUND_ID,
   TASK_SOUND_EVENTS,
   builtinSoundId,
-  createCustomSoundFromFile,
   customSoundId,
   getTaskClickSoundLabel,
   previewTaskClickSound,
 } from "@/lib/taskClickSounds";
+import { isTauri } from "@/lib/tauriEnv";
 import { useSettingsStore } from "@/stores/settingsStore";
+import { useUserSoundsStore } from "@/stores/userSoundsStore";
 import Container from "@/ui/settings/Container";
+import FileSelect from "@/ui/settings/FileSelect";
 import SettingsHeader from "@/ui/settings/Header";
 import Button from "@/ui/Button";
 
 export function AudioSection() {
   const uid = useId();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const audioPrefs = useSettingsStore((s) => s.audioPrefs);
   const customSounds = useSettingsStore((s) => s.customSounds);
   const setAudioPrefs = useSettingsStore((s) => s.setAudioPrefs);
-  const addCustomSound = useSettingsStore((s) => s.addCustomSound);
-  const removeCustomSound = useSettingsStore((s) => s.removeCustomSound);
+  const { entries, loading, error, reload, importFile, deleteSound, openFolder } =
+    useUserSoundsStore();
+  const hasFolder = isTauri();
 
   const [importError, setImportError] = useState<string | null>(null);
   const [importMessage, setImportMessage] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
 
   const volumeId = `${uid}-volume`;
-  const fileInputId = `${uid}-sound-file`;
   const soundsDisabled = !audioPrefs.soundEnabled;
+  const brokenFiles = entries.filter((e) => e.error);
 
-  const onChooseSoundFile = () => {
-    setImportError(null);
-    setImportMessage(null);
-    fileInputRef.current?.click();
-  };
-
-  const onSoundFileSelected = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) return;
-
+  const onSoundFileSelected = async (file: File) => {
     setIsImporting(true);
     setImportError(null);
     setImportMessage(null);
     try {
-      const sound = await createCustomSoundFromFile(file);
-      addCustomSound(sound);
+      const sound = await importFile(file);
       setImportMessage(
         `Imported "${sound.name}" and selected it for completing tasks.`,
       );
@@ -74,9 +66,7 @@ export function AudioSection() {
       <SettingsHeader>
         <div>
         <SettingsHeader.Title>Audio</SettingsHeader.Title>
-        <SettingsHeader.Subtitle>
-          Sounds for completing, unchecking, and creating tasks.
-        </SettingsHeader.Subtitle>
+
         </div>
       </SettingsHeader>
 
@@ -208,32 +198,36 @@ export function AudioSection() {
         />
 
         <Container.Body className="space-y-4 px-4 py-4">
-          <p className="text-sm text-muted">
-            Upload a short audio clip from your device. Saved locally.
-          </p>
-          <div
-            className="rounded-xl border border-accent bg-accent-soft p-3 text-sm text-blue-900 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-200"
-            role="note"
-          >
-            Supports `.mp3`, `.wav`, `.ogg`, `.m4a`, and `.aac` up to 512 KB.
-          </div>
 
-          <input
-            ref={fileInputRef}
-            id={fileInputId}
-            type="file"
+
+
+          <FileSelect
+            onSelect={onSoundFileSelected}
             accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.webm"
-            className="sr-only"
-            onChange={onSoundFileSelected}
+            placeholder="Choose an audio file…"
+            busy={isImporting}
+
+            aria-label="Audio file"
           />
 
-          <Button
-            type="button"
-            onClick={onChooseSoundFile}
-            disabled={isImporting}
-          >
-            {isImporting ? "Importing…" : "Choose audio file"}
-          </Button>
+          {hasFolder ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <Button type="button" styling="bordered" onClick={() => void openFolder()}>
+                <IoFolderOpenOutline aria-hidden />
+                Show sounds folder
+              </Button>
+              <button
+                type="button"
+                onClick={() => void reload()}
+                disabled={loading}
+                aria-label="Rescan sounds folder"
+                title="Rescan sounds folder"
+                className="rounded-lg p-1.5 text-muted hover:bg-sunken hover:text-ink"
+              >
+                <IoRefresh className={loading ? "animate-spin" : ""} />
+              </button>
+            </div>
+          ) : null}
 
           {customSounds.length > 0 ? (
             <ul className="space-y-2">
@@ -254,7 +248,7 @@ export function AudioSection() {
                       <p className="text-xs text-muted">
                         {usedFor.length > 0
                           ? `Used for: ${usedFor.join(", ")}`
-                          : "Imported sound"}
+                          : (sound.fileName ?? "Imported sound")}
                       </p>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -268,7 +262,8 @@ export function AudioSection() {
                       </Button>
                       <button
                         type="button"
-                        onClick={() => removeCustomSound(sound.id)}
+                        onClick={() => void deleteSound(sound.id)}
+                        title={sound.fileName ? "Delete sound file" : "Remove sound"}
                         className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-surface px-3 py-1.5 text-xs font-medium text-red-700 transition-colors hover:bg-red-50 dark:border-red-900/40 dark:text-red-300 dark:hover:bg-red-950/30"
                       >
                         <IoTrashOutline className="size-3.5" aria-hidden />
@@ -283,7 +278,24 @@ export function AudioSection() {
             <p className="text-sm text-muted">No imported sounds yet.</p>
           )}
 
+          {brokenFiles.length > 0 ? (
+            <ul className="space-y-1 rounded-lg bg-warn-soft px-3 py-2 text-[11px] text-warn">
+              {brokenFiles.map((file) => (
+                <li key={file.fileName} className="flex items-center gap-1.5">
+                  <IoWarningOutline aria-hidden />
+                  <span className="font-semibold">{file.fileName}</span> was
+                  skipped: {file.error}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
           <div aria-live="polite">
+            {error ? (
+              <p className="text-sm text-red-600 dark:text-red-400" role="alert">
+                {error}
+              </p>
+            ) : null}
             {importError ? (
               <p
                 className="text-sm text-red-600 dark:text-red-400"

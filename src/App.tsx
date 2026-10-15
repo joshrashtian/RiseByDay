@@ -36,6 +36,7 @@ import { TasksSyncEngine } from "./components/global/TasksSyncEngine";
 import { useAppZoom } from "./hooks/useAppZoom";
 import { useAppTheme } from "./hooks/useAppTheme";
 import { useUserThemesSync } from "./hooks/useUserThemesSync";
+import { useUserSoundsSync } from "./hooks/useUserSoundsSync";
 import { useMenuNavigation } from "./hooks/useMenuNavigation";
 import { useCreateTaskAction } from "./hooks/useCreateTaskAction";
 import { useGoogleCalendarSync } from "./hooks/useGoogleCalendarSync";
@@ -64,6 +65,7 @@ export default function App() {
   useAppZoom();
   useAppTheme();
   useUserThemesSync();
+  useUserSoundsSync();
   useCreateTaskAction();
   useGoogleCalendarSync();
   useTaskNotifications();

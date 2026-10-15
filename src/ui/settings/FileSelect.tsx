@@ -38,15 +38,15 @@ const FileSelect = ({
 
   return (
     <div className={twMerge('flex items-center gap-2', className)}>
+
       <label
         htmlFor={inputId}
         title="Choose a file"
         className={twMerge(
-          'relative inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-line bg-surface text-muted ring-2 ring-transparent transition-shadow focus-within:ring-accent',
-          inactive ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-sunken hover:text-ink hover:ring-line'
+          'flex h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-sm ring-2 ring-transparent transition-shadow focus-within:ring-accent',
+          inactive ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-sunken hover:ring-line'
         )}
       >
-        {busy ? <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : icon}
         <input
           id={inputId}
           type="file"
@@ -56,15 +56,6 @@ const FileSelect = ({
           aria-label={ariaLabel}
           className="sr-only"
         />
-      </label>
-
-      <label
-        htmlFor={inputId}
-        className={twMerge(
-          'flex h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-sm',
-          inactive ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-        )}
-      >
         <span className={twMerge('min-w-0 flex-1 truncate', value ? 'text-ink' : 'text-muted')} title={value || undefined}>
           {busy ? 'Importing…' : value || placeholder}
         </span>

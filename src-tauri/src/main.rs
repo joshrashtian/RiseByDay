@@ -4,6 +4,7 @@ mod notis;
 mod oauth_loopback;
 mod open_cognition_macro;
 mod spotify_oauth;
+mod user_sounds;
 mod user_themes;
 
 use tauri::{
@@ -39,6 +40,11 @@ fn main() {
             user_themes::delete_user_theme,
             user_themes::open_user_themes_folder,
             user_themes::create_new_theme,
+            user_sounds::list_user_sounds,
+            user_sounds::read_user_sound,
+            user_sounds::save_user_sound,
+            user_sounds::delete_user_sound,
+            user_sounds::open_user_sounds_folder,
         ])
         .setup(|app| {
             notis::start_scheduler(app.handle().clone());

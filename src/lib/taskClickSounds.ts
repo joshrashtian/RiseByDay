@@ -70,7 +70,10 @@ function soundPrefKey(event: TaskSoundEvent): TaskSoundPrefKey {
   return TASK_SOUND_EVENTS.find((e) => e.event === event)!.prefKey;
 }
 
+/** Limit for sounds kept in localStorage (browser-only builds). */
 export const MAX_CUSTOM_SOUND_BYTES = 512 * 1024;
+/** Limit for sounds kept in the sounds folder; matches `user_sounds.rs`. */
+export const MAX_FOLDER_SOUND_BYTES = 2 * 1024 * 1024;
 
 const ACCEPTED_AUDIO_EXTENSIONS = new Set([
   ".mp3",
@@ -244,6 +247,53 @@ function readFileAsDataUrl(file: File): Promise<string> {
 function getFileExtension(name: string): string {
   const dot = name.lastIndexOf(".");
   return dot >= 0 ? name.slice(dot).toLowerCase() : "";
+}
+
+const MIME_BY_EXTENSION: Record<string, string> = {
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
+  ".ogg": "audio/ogg",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+  ".webm": "audio/webm",
+};
+
+export function mimeTypeForFileName(name: string): string {
+  return MIME_BY_EXTENSION[getFileExtension(name)] ?? "audio/mpeg";
+}
+
+/**
+ * A file name safe for the sounds folder: no path characters, an accepted
+ * audio extension (derived from the MIME type when missing), and not taken.
+ */
+export function soundFileNameFor(
+  name: string,
+  mimeType: string,
+  taken: readonly string[],
+): string {
+  let ext = getFileExtension(name);
+  if (!ACCEPTED_AUDIO_EXTENSIONS.has(ext)) {
+    ext =
+      Object.entries(MIME_BY_EXTENSION).find(([, mime]) => mime === mimeType)?.[0] ??
+      ".mp3";
+  }
+  const stem =
+    name
+      .replace(/\.[^.]+$/, "")
+      .replace(/[\\/:*?"<>|\u0000-\u001f]/g, "")
+      .replace(/^\.+/, "")
+      .trim()
+      .slice(0, 100) || "sound";
+  const lowerTaken = new Set(taken.map((n) => n.toLowerCase()));
+  let candidate = `${stem}${ext}`;
+  for (let i = 2; lowerTaken.has(candidate.toLowerCase()); i++) {
+    candidate = `${stem} (${i})${ext}`;
+  }
+  return candidate;
+}
+
+export function soundNameFromFileName(fileName: string): string {
+  return fileName.replace(/\.[^.]+$/, "").trim() || "Custom sound";
 }
 
 export function isAcceptedAudioFile(file: File): boolean {

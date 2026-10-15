@@ -102,6 +102,11 @@ type SettingsState = {
     prefs: AudioPrefs | ((prev: AudioPrefs) => AudioPrefs),
   ) => void;
   addCustomSound: (sound: CustomSound) => void;
+  /**
+   * Replaces the whole sound list (the sounds folder is the source of truth).
+   * `remap` rewrites selected sound ids, e.g. after migrating a sound to a file.
+   */
+  setCustomSounds: (sounds: CustomSound[], remap?: Record<string, string>) => void;
   removeCustomSound: (id: string) => void;
   setBlockConfigs: (configs: BlockConfig[]) => void;
   setCategoryConfigs: (configs: CategoryConfig[]) => void;
@@ -353,6 +358,21 @@ export const useSettingsStore = create<SettingsState>()(
             [...s.customSounds, sound],
           ),
         })),
+      setCustomSounds: (customSounds, remap = {}) =>
+        set((s) => {
+          const keep = new Set(customSounds.map((sound) => sound.id));
+          for (const sound of s.customSounds) {
+            if (!keep.has(sound.id)) evictTaskClickSoundFromCache(customSoundId(sound.id));
+          }
+          const prefs = { ...s.audioPrefs };
+          for (const key of ["taskClickSoundId", "taskUncheckSoundId", "taskCreateSoundId"] as const) {
+            prefs[key] = remap[prefs[key]] ?? prefs[key];
+          }
+          return {
+            customSounds,
+            audioPrefs: normalizeSettingsAudio(prefs, customSounds),
+          };
+        }),
       removeCustomSound: (id) =>
         set((s) => {
           const customSounds = s.customSounds.filter((sound) => sound.id !== id);
@@ -379,7 +399,10 @@ export const useSettingsStore = create<SettingsState>()(
         pinnedToolkitPanels: state.pinnedToolkitPanels,
         weatherCoords: state.weatherCoords,
         audioPrefs: state.audioPrefs,
-        customSounds: state.customSounds,
+        // Folder-backed sounds keep only their metadata; the bytes stay on disk.
+        customSounds: state.customSounds.map((sound) =>
+          sound.fileName ? { ...sound, dataUrl: "" } : sound,
+        ),
         blockConfigs: state.blockConfigs,
         categoryConfigs: state.categoryConfigs,
       }),

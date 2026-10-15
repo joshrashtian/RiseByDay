@@ -190,8 +190,14 @@ export type AudioPrefs = {
 export type CustomSound = {
   id: string;
   name: string;
+  /**
+   * Playable URL. For folder-backed sounds this is a runtime blob URL and is
+   * not persisted; it's empty until the sounds folder has been read.
+   */
   dataUrl: string;
   mimeType: string;
+  /** Set when the sound lives in the sounds folder (desktop app). */
+  fileName?: string;
 };
 
 // ── Spotify ───────────────────────────────────────────────────────────────
