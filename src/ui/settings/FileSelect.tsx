@@ -56,6 +56,9 @@ const FileSelect = ({
           aria-label={ariaLabel}
           className="sr-only"
         />
+        <span className="flex shrink-0 text-muted [&>svg]:size-4" aria-hidden>
+          {busy ? <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" /> : icon}
+        </span>
         <span className={twMerge('min-w-0 flex-1 truncate', value ? 'text-ink' : 'text-muted')} title={value || undefined}>
           {busy ? 'Importing…' : value || placeholder}
         </span>

@@ -647,9 +647,6 @@ button {
   cursor: pointer;
 }
 
-#greet-input {
-  margin-right: 5px;
-}
 
 .no-scrollbar {
   -ms-overflow-style: none;

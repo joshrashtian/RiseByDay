@@ -1,8 +1,10 @@
 import { IoCalendarOutline, IoSearch, IoSwapVertical } from "react-icons/io5";
 import type { TaskViewMode } from "./taskView";
-import { TASK_ICON_CLASS } from "./taskView";
 import type { Selection } from "react-aria-components";
-import { MultiSelect, type MultiSelectItemType } from "../base/input/multi-select";
+import type { MultiSelectItemType } from "../base/input/multi-select";
+import FilterInput from "@/ui/filter/FilterInput";
+import FilterSelect from "@/ui/filter/FilterSelect";
+import FilterButton from "@/ui/filter/FilterButton";
 import type { GroupSortConfig, TaskSortConfig } from "../../lib/taskSort";
 import { sortLabel } from "../../lib/taskSort";
 import { TasksSortMenu } from "./TasksSortMenu";
@@ -27,9 +29,6 @@ export type TasksHeaderProps = {
   viewMode: TaskViewMode;
   hideCategoryFilter?: boolean;
 };
-
-const shellInputClass =
-  "rounded-2xl border border-line/70 bg-surface/50 text-sm text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] ring-1 ring-line/30 backdrop-blur-xl outline-none focus:border-line-strong/80 focus:ring-2 focus:ring-line-strong/30";
 
 export function TasksHeader({
   taskSearch,
@@ -71,28 +70,25 @@ export function TasksHeader({
   };
 
   return (
-    <header className="shrink-0   px-5 pb-4 pt-6 sm:px-8 sm:pb-5 sm:pt-8">
-      <div className="mx-auto flex w-full max-w-3xl min-w-0 flex-col gap-5 xl:max-w-4xl">
-        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-          <label className={` pl-4 pr-3 gap-4 ${shellInputClass} relative flex flex-row justify-start items-center min-w-0 flex-1  sm:min-w-[200px]`}>
-            <IoSearch
-              className={` hover:text-zinc-500 duration-1000  text-slate-400`}
+    <header className="shrink-0 px-5 pb-4 pt-6 sm:px-8 sm:pb-5 sm:pt-8">
+      {/* The fixed TasksSideRail sits 16px from the right edge and is 60px wide;
+          cap the centered column so its right edge always clears it. */}
+      <div className="mx-auto flex w-full max-w-3xl min-w-0 flex-col gap-5 sm:max-w-[min(48rem,calc(100%-6.5rem))] xl:max-w-[min(56rem,calc(100%-6.5rem))]">
+        <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+          <FilterInput
+            type="search"
+            icon={<IoSearch />}
+            value={taskSearch}
+            onChange={(e) => onTaskSearchChange(e.target.value)}
+            placeholder="Search tasks, category, or tags…"
+            autoComplete="off"
+            aria-label="Search tasks by title, category, or tags"
+            className="flex-1 sm:min-w-[200px]"
+          />
 
-            />
-            <input
-              type="search"
-              value={taskSearch}
-              onChange={(e) => onTaskSearchChange(e.target.value)}
-              placeholder="Search tasks, category, or tags…"
-              autoComplete="off"
-              className={`w-full py-2.5  placeholder:text-faint `}
-              aria-label="Search tasks by title, category, or tags"
-            />
-          </label>
-
-          <div className="flex min-w-0 flex-wrap items-center gap-2 sm:justify-end">
-            <div className="min-w-44 max-w-60">
-              <MultiSelect
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <div className="w-44">
+              <FilterSelect
                 items={blockItems}
                 selectedKeys={blockFilters}
                 onSelectionChange={(keys) =>
@@ -100,7 +96,6 @@ export function TasksHeader({
                 }
                 placeholder="All blocks"
                 showFooter
-                size="sm"
                 selectedCountFormatter={(count) =>
                   count === 1 ? "1 block" : `${count} blocks`
                 }
@@ -108,8 +103,8 @@ export function TasksHeader({
             </div>
 
             {!hideCategoryFilter ? (
-              <div className="min-w-48 max-w-64">
-                <MultiSelect
+              <div className="w-48">
+                <FilterSelect
                   items={categoryItems}
                   selectedKeys={categoryFilters}
                   onSelectionChange={(keys) =>
@@ -117,7 +112,6 @@ export function TasksHeader({
                   }
                   placeholder="All categories"
                   showFooter
-                  size="sm"
                   selectedCountFormatter={(count) =>
                     count === 1 ? "1 category" : `${count} categories`
                   }
@@ -125,34 +119,23 @@ export function TasksHeader({
               </div>
             ) : null}
 
-            <button
-              type="button"
+            <FilterButton
+              icon={<IoCalendarOutline />}
+              active={dueTodayOnly}
               onClick={() => onDueTodayOnlyChange(!dueTodayOnly)}
-              aria-pressed={dueTodayOnly}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-2xl border px-3 py-2.5 text-sm font-medium transition-colors ${
-                dueTodayOnly
-                  ? "border-sky-500/50 bg-sky-500/15 text-sky-950 ring-2 ring-sky-400/35 dark:text-sky-100"
-                  : "border-line/70 bg-surface/50 text-ink ring-1 ring-line/30 backdrop-blur-xl hover:bg-surface/70"
-              }`}
             >
-              <IoCalendarOutline className={`${TASK_ICON_CLASS} opacity-90`} aria-hidden />
               Due Today
-            </button>
+            </FilterButton>
 
-            <button
-              type="button"
-              onClick={() => onSortMenuOpenChange(!sortMenuOpen)}
-              aria-pressed={sortMenuOpen}
+            <FilterButton
+              icon={<IoSwapVertical />}
+              active={sortMenuOpen}
               aria-expanded={sortMenuOpen}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-2xl border px-3 py-2.5 text-sm font-medium transition-colors sm:hidden ${
-                sortMenuOpen
-                  ? "border-zinc-500/50 bg-zinc-500/15 text-ink ring-2 ring-line-strong/35"
-                  : "border-line/70 bg-surface/50 text-ink ring-1 ring-line/30 backdrop-blur-xl hover:bg-surface/70"
-              }`}
+              onClick={() => onSortMenuOpenChange(!sortMenuOpen)}
+              className="sm:hidden"
             >
-              <IoSwapVertical className={`${TASK_ICON_CLASS} opacity-90`} aria-hidden />
               Sort
-            </button>
+            </FilterButton>
           </div>
         </div>
 

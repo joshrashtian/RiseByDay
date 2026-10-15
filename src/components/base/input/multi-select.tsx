@@ -161,6 +161,8 @@ interface MultiSelectProps extends RefAttributes<HTMLDivElement>, CommonProps {
     isInvalid?: boolean;
     popoverClassName?: string;
     className?: string;
+    /** Replaces the default trigger styling (merged last). */
+    triggerClassName?: string;
     onReset?: () => void;
     onSelectAll?: () => void;
     showFooter?: boolean;
@@ -188,6 +190,7 @@ const MultiSelectRoot = ({
     hideRequiredIndicator,
     popoverClassName,
     className,
+    triggerClassName,
     onReset,
     onSelectAll,
     showFooter = true,
@@ -268,6 +271,7 @@ const MultiSelectRoot = ({
                             isInvalid && "border-red-500/60",
                             isFocusVisible && "border-zinc-500",
                             triggerSizes[size],
+                            triggerClassName,
                         )
                     }
                 >
