@@ -129,7 +129,7 @@ out and the sidebar follows the base colors.
 | Field | Required | Notes |
 |---|---|---|
 | `schemaVersion` | yes | Always `1` for now. |
-| `id` | yes | Lowercase letters, numbers and dashes. Must be unique and can't be `yacht-club` or `classic`. |
+| `id` | yes | Lowercase letters, numbers and dashes. Must be unique and can't be a built-in id (`yacht-club`, `classic`, `san-luis-obispo`, `transparent`). |
 | `name` | yes | Shown in Settings. |
 | `appearance` | yes | `"both"`, `"light"` or `"dark"`. A one-mode theme uses that palette in both modes. |
 | `extends` | no | Id of the theme that supplies any color you leave out. Defaults to Yacht Club. |

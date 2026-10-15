@@ -19,7 +19,12 @@
         "width": 800,
         "height": 600,
         "decorations": true,
-        "zoomHotkeysEnabled": true
+        "zoomHotkeysEnabled": true,
+        "transparent": true,
+        "windowEffects": {
+          "effects": ["sidebar"],
+          "state": "followsWindowActiveState"
+        }
       }
     ],
     "security": {

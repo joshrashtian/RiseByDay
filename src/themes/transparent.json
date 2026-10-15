@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "id": "transparent",
+  "name": "Transparent",
+  "author": "RiseByDay",
+  "version": "1.0.0",
+  "description": "Frosted glass: the desktop shows through the window.",
+  "appearance": "both",
+  "colors": {
+    "light": {
+      "canvas": "rgba(250, 250, 250, 0.2)",
+      "surface": "rgba(255, 255, 255, 0.35)",
+      "raised": "rgba(255, 255, 255, 0.92)",
+      "sunken": "rgba(255, 255, 255, 0.12)",
+
+      "ink": "#111113",
+      "muted": "#4F4F55",
+      "faint": "#7C7C84",
+
+      "line": "rgba(0, 0, 0, 0.09)",
+      "line-strong": "rgba(0, 0, 0, 0.18)",
+
+      "accent": "#2563EB",
+      "accent-hover": "#1D4ED8",
+      "accent-ink": "#FFFFFF",
+
+      "secondary": "#7C3AED",
+
+      "danger": "#B42318",
+      "success": "#15803D",
+      "warn": "#B45309",
+
+      "overlay": "rgba(0, 0, 0, 0.25)"
+    },
+    "dark": {
+      "canvas": "rgba(18, 18, 20, 0.15)",
+      "surface": "rgba(255, 255, 255, 0.06)",
+      "raised": "rgba(32, 32, 36, 0.92)",
+      "sunken": "rgba(255, 255, 255, 0.03)",
+
+      "ink": "#F5F5F7",
+      "muted": "#B4B4BC",
+      "faint": "#82828C",
+
+      "line": "rgba(255, 255, 255, 0.09)",
+      "line-strong": "rgba(255, 255, 255, 0.18)",
+
+      "accent": "#60A5FA",
+      "accent-hover": "#93C5FD",
+      "accent-ink": "#0B0B0D",
+
+      "secondary": "#A78BFA",
+
+      "danger": "#F07167",
+      "success": "#6FBF97",
+      "warn": "#E0A458",
+
+      "overlay": "rgba(0, 0, 0, 0.45)"
+    }
+  },
+  "components": {
+    "light": {
+      "sidebar-bg": "rgba(255, 255, 255, 0.1)",
+      "sidebar-item-hover": "rgba(0, 0, 0, 0.05)",
+      "sidebar-item-active": "rgba(0, 0, 0, 0.07)",
+      "input-bg": "rgba(255, 255, 255, 0.6)",
+      "popover-bg": "rgba(255, 255, 255, 0.95)"
+    },
+    "dark": {
+      "sidebar-bg": "rgba(0, 0, 0, 0.08)",
+      "sidebar-item-hover": "rgba(255, 255, 255, 0.05)",
+      "sidebar-item-active": "rgba(255, 255, 255, 0.08)",
+      "input-bg": "rgba(255, 255, 255, 0.06)",
+      "popover-bg": "rgba(32, 32, 36, 0.95)"
+    }
+  },
+  "categoryPalette": ["#2563EB", "#7C3AED", "#15803D", "#B45309", "#DB2777"]
+}

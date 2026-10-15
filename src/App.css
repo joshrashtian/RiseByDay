@@ -585,7 +585,11 @@ body,
   height: 100%;
   overflow: hidden;
   color: var(--ink);
-  background-color: var(--canvas);
+}
+
+body,
+#root {
+  background-color: transparent;
 }
 
 html[data-window="cognition"],
