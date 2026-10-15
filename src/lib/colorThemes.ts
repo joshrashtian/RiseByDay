@@ -18,6 +18,7 @@ import type {
 import { SETTINGS_STORAGE_KEY } from "@/lib/appTheme";
 import yachtClub from "@/themes/yacht-club.json";
 import classic from "@/themes/classic.json";
+import sanLuisObispo from "@/themes/san-luis-obispo.json";
 
 export const COLOR_THEME_TOKENS: readonly ColorThemeToken[] = [
   "canvas", "surface", "raised", "sunken",
@@ -40,6 +41,7 @@ export const COLOR_THEME_COMPONENT_TOKENS: readonly ColorThemeComponentToken[] =
 export const BUILT_IN_COLOR_THEMES: readonly ColorThemeFile[] = [
   yachtClub as ColorThemeFile,
   classic as ColorThemeFile,
+  sanLuisObispo as ColorThemeFile,
 ];
 
 export const DEFAULT_COLOR_THEME_ID = "yacht-club";

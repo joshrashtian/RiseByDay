@@ -38,7 +38,6 @@ const ROUTE_RULES: RouteRule[] = [
   { path: "/toolkit", descriptor: { id: "toolkit", label: "Toolbox" } },
   { path: "/apps", descriptor: { id: "generic", label: "Apps" } },
   { path: "/social", descriptor: { id: "generic", label: "Social" } },
-  { path: "/help", descriptor: { id: "generic", label: "Help" } },
 ];
 
 const FALLBACK: ContextPanelDescriptor = { id: "generic", label: "Page" };

@@ -11,6 +11,12 @@ const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 export default defineConfig({
 	vite: {
 		server: { fs: { allow: [repoRoot] } },
+		// The parser playground imports the app's parser from <repo>/src. Resolve
+		// its imports here so the docs build only needs its own node_modules.
+		resolve: {
+			alias: { '@': fileURLToPath(new URL('../../src', import.meta.url)) },
+			dedupe: ['luxon'],
+		},
 	},
 	integrations: [
 		starlight({

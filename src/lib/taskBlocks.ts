@@ -2,26 +2,11 @@ import type { BlockConfig, Task } from "@/types";
 
 export type { BlockConfig } from "@/types";
 
-export const TIME_BLOCK_SUGGESTIONS = [
-  "Early Morning",
-  "Morning",
-  "Afternoon",
-  "Evening",
-  "Late Night",
-] as const;
-
-export const CONTEXT_BLOCK_SUGGESTIONS = [
-  "Work",
-  "School",
-  "Home",
-  "Fitness",
-  "Errands",
-] as const;
-
-export const DEFAULT_BLOCK_SUGGESTIONS = [
-  ...TIME_BLOCK_SUGGESTIONS,
-  ...CONTEXT_BLOCK_SUGGESTIONS,
-] as const;
+export {
+  TIME_BLOCK_SUGGESTIONS,
+  CONTEXT_BLOCK_SUGGESTIONS,
+  DEFAULT_BLOCK_SUGGESTIONS,
+} from "./blockSuggestions";
 
 import { useSettingsStore } from "../stores/settingsStore";
 

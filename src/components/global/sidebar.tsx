@@ -15,10 +15,11 @@ import {
   IoSearchOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { AnimatePresence, Reorder, motion } from "motion/react";
 import spotifyIcon from "../../assets/spotifysvg.svg";
 import { TOOLKIT_PANELS } from "../../lib/toolkitPanels";
+import { openDocs } from "../../lib/docs";
 import {
   SIDEBAR_RAIL_WIDTH,
   clampSidebarWidthToViewport,
@@ -454,14 +455,15 @@ const SideBar = ({
                 >
                   <IoSettingsOutline className="text-base" />
                 </button>
-                <NavLink
-                  to="/help"
+                <button
+                  type="button"
+                  onClick={openDocs}
                   aria-label="Help"
-                  title="Help"
+                  title="Help (opens docs)"
                   className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors ${sidebarTokens.utilityButton}`}
                 >
                   <IoHelpCircleOutline className="text-base" />
-                </NavLink>
+                </button>
                 {canExpand ? (
                   <button
                     type="button"

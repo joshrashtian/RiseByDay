@@ -3,6 +3,8 @@ title: Task Language Parser
 description: Set a task's priority, time, block, category and tags while you type its title.
 ---
 
+import ParserPlayground from '../../../components/ParserPlayground.astro';
+
 The task creator and the Cognition Bar (<kbd>⌥</kbd> <kbd>R</kbd>) read short
 tokens out of what you type. Everything that isn't a token becomes the title,
 and a row of hints under the input shows what was picked up as you go.
@@ -13,6 +15,12 @@ Write report !high %Work @@School #essay @tomorrow @3pm
 
 That creates **Write report** — high priority, in the Work block, filed under
 School, tagged `essay`, due tomorrow at 3:00 PM.
+
+Type below to see what the parser returns. This runs the same code as the app,
+so dates resolve against your current time and the hints match what you'd see
+under the input.
+
+<ParserPlayground />
 
 ## Tokens
 

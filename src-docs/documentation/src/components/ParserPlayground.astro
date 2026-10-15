@@ -1,0 +1,197 @@
+---
+/**
+ * Live playground for the task language parser. Runs the app's real
+ * `parseTaskChatInput` (src/components/tasks/functions/parseTokens.ts) in the
+ * browser, so the output here is exactly what the app would produce.
+ */
+const examples = [
+  "Write report !high %Work @@School #essay @tomorrow @3pm",
+  "Standup @9am-9:15am %Work",
+  "@9pm to @1am Night shift !!",
+  'Plan trip @@"Side Projects" #travel @10/24',
+  "Call mom ! @tonight",
+  "Read chapter 4 @someday #reading",
+];
+---
+
+<div class="parser-playground not-content">
+  <label class="pp-label" for="pp-input">Try it</label>
+  <input
+    id="pp-input"
+    class="pp-input"
+    type="text"
+    spellcheck="false"
+    autocomplete="off"
+    value={examples[0]}
+  />
+
+  <div class="pp-examples" role="list">
+    {
+      examples.map((ex) => (
+        <button type="button" class="pp-example" data-example={ex} role="listitem">
+          {ex}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="pp-hints" aria-live="polite"></div>
+
+  <div class="pp-output-head">
+    <span>Result</span>
+    <span class="pp-now"></span>
+  </div>
+  <pre class="pp-output"><code></code></pre>
+</div>
+
+<script>
+  import { parseTaskChatInput } from "../../../../src/components/tasks/functions/parseTokens";
+
+  for (const root of document.querySelectorAll<HTMLElement>(".parser-playground")) {
+    const input = root.querySelector<HTMLInputElement>(".pp-input")!;
+    const hintsEl = root.querySelector<HTMLElement>(".pp-hints")!;
+    const outEl = root.querySelector<HTMLElement>(".pp-output code")!;
+    const nowEl = root.querySelector<HTMLElement>(".pp-now")!;
+
+    const render = () => {
+      const result = parseTaskChatInput(input.value);
+      const { hints, ...fields } = result;
+
+      hintsEl.replaceChildren(
+        ...hints.map((h) => {
+          const chip = document.createElement("span");
+          chip.className = h.partial ? "pp-hint is-partial" : "pp-hint";
+          chip.textContent = h.label;
+          return chip;
+        }),
+      );
+
+      // Dates serialize as ISO strings, the same shape the app stores.
+      outEl.textContent = JSON.stringify({ ...fields, hints }, null, 2);
+      nowEl.textContent = `Relative to ${new Date().toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })}`;
+    };
+
+    input.addEventListener("input", render);
+    for (const btn of root.querySelectorAll<HTMLButtonElement>(".pp-example")) {
+      btn.addEventListener("click", () => {
+        input.value = btn.dataset.example ?? "";
+        input.focus();
+        render();
+      });
+    }
+    render();
+  }
+</script>
+
+<style>
+  .parser-playground {
+    margin-block: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.75rem;
+    background: var(--sl-color-bg-nav, var(--sl-color-gray-7));
+  }
+
+  .pp-label,
+  .pp-output-head {
+    display: block;
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+  }
+
+  .pp-input {
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    font-family: "Google Sans Code", var(--sl-font-mono);
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-white);
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+  }
+
+  .pp-input:focus {
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 1px;
+  }
+
+  .pp-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.6rem;
+  }
+
+  .pp-example {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0.2rem 0.6rem;
+    font-family: "Google Sans Code", var(--sl-font-mono);
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-2);
+    background: transparent;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .pp-example:hover {
+    color: var(--sl-color-white);
+    border-color: var(--sl-color-gray-3);
+  }
+
+  .pp-hints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    min-height: 1.6rem;
+    margin-block: 0.9rem;
+  }
+
+  .pp-hints :global(.pp-hint) {
+    padding: 0.15rem 0.55rem;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-white);
+    background: var(--sl-color-gray-6);
+    border-radius: 0.375rem;
+  }
+
+  .pp-hints :global(.pp-hint.is-partial) {
+    color: var(--sl-color-gray-3);
+    background: transparent;
+    border: 1px dashed var(--sl-color-gray-4);
+  }
+
+  .pp-output-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pp-now {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .pp-output {
+    margin-top: 0.4rem;
+    max-height: 22rem;
+    overflow: auto;
+    padding: 0.75rem;
+    font-size: var(--sl-text-xs);
+    line-height: 1.5;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+  }
+</style>

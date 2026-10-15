@@ -20,7 +20,6 @@ import { HomeScreen } from "./screens/HomeScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import TasksScreen from "./screens/TasksScreen";
 import CalendarScreen from "./screens/CalendarScreen";
-import HelpScreen from "./screens/HelpScreen";
 import AppsScreen from "./screens/AppsScreen";
 import SpotifyScreen from "./screens/integrations/SpotifyScreen";
 import { PROJECTS_ENABLED, SPOTIFY_ENABLED } from "./lib/featureFlags";
@@ -180,14 +179,6 @@ export default function App() {
               element={
                 <AnimatedPage>
                   <CalendarScreen />
-                </AnimatedPage>
-              }
-            />
-            <Route
-              path="/help"
-              element={
-                <AnimatedPage>
-                  <HelpScreen />
                 </AnimatedPage>
               }
             />

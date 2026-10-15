@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import {
   IoAdd,
   IoCheckmarkCircle,
@@ -29,10 +28,8 @@ export function ColorThemePicker() {
   const colorTheme = useSettingsStore((s) => s.colorTheme);
   const customColorThemes = useSettingsStore((s) => s.customColorThemes);
   const setColorTheme = useSettingsStore((s) => s.setColorTheme);
-  const { dir, createTheme, entries, loading, error, reload, importFile, deleteTheme, openFolder } =
+  const { createTheme, entries, loading, error, reload, deleteTheme, openFolder } =
     useUserThemesStore();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [importErrors, setImportErrors] = useState<string[]>([]);
   const hasFolder = isTauri();
 
   const themes: { theme: ColorThemeFile; custom: boolean }[] = [
@@ -151,28 +148,10 @@ export function ColorThemePicker() {
               </button>
             </>
           ) : null}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="application/json,.json"
-            className="hidden"
-            onChange={async (event) => {
-              const file = event.target.files?.[0];
-              event.target.value = "";
-              if (file) setImportErrors(await importFile(file));
-            }}
-          />
         </div>
 
-
-
-        {importErrors.length > 0 || error ? (
-          <ul className="space-y-0.5 rounded-lg bg-danger-soft px-3 py-2 text-[11px] text-danger">
-            {error ? <li>{error}</li> : null}
-            {importErrors.slice(0, 6).map((e) => (
-              <li key={e}>{e}</li>
-            ))}
-          </ul>
+        {error ? (
+          <p className="rounded-lg bg-danger-soft px-3 py-2 text-[11px] text-danger">{error}</p>
         ) : null}
       </Container.Body>
     </Container>

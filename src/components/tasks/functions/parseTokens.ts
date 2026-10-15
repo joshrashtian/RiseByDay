@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { DEFAULT_BLOCK_SUGGESTIONS } from "../../../lib/taskBlocks";
+import { DEFAULT_BLOCK_SUGGESTIONS } from "../../../lib/blockSuggestions";
 import type { TaskPriority } from "@/types";
 import { normalizeTaskTags } from "../../../types/task";
 import { parseLeadingCategoryToken } from "../../global/commandbar/categoryHelpers";

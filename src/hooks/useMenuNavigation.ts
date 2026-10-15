@@ -8,6 +8,7 @@ import {
   clampAppZoom,
 } from "../lib/appZoom";
 import { useSettingsStore } from "../stores/settingsStore";
+import { openDocs } from "../lib/docs";
 
 function isEditableTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -81,7 +82,7 @@ export function useMenuNavigation() {
           window.dispatchEvent(new Event("rbd:open-settings"));
           break;
         case "help":
-          navigate("/help");
+          openDocs();
           break;
         case "toolkit":
           navigate("/toolkit");

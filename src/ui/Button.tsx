@@ -6,7 +6,7 @@ type RBDButtonProps = React.ComponentPropsWithoutRef<'button'> & {
 }
 
 const variants = {
-  solid: 'bg-ink text-canvas hover:bg-ink/85',
+  solid: 'bg-ink text-surface hover:bg-ink/85',
   bordered: ' bg-surface text-muted hover:bg-sunken hover:text-ink',
 } as const
 

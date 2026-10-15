@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "san-luis-obispo",
+  "name": "San Luis Obispo",
+  "author": "RiseByDay",
+  "version": "1.0.0",
+  "description": "Crisp white, Poly Green and Mustang Gold, with a sage sidebar.",
+  "appearance": "both",
+  "colors": {
+    "light": {
+      "canvas": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "raised": "#FFFFFF",
+      "sunken": "#F5F5F5",
+
+      "ink": "#1F1F1F",
+      "muted": "#54585A",
+      "faint": "#8E9089",
+
+      "line": "#E3E3E3",
+      "line-strong": "#CCCCCC",
+
+      "accent": "#2E7533",
+      "accent-hover": "#154734",
+      "accent-ink": "#FFFFFF",
+
+      "secondary": "#BD8B13",
+
+      "danger": "#B42318",
+      "success": "#2E7533",
+      "warn": "#A16207",
+
+      "overlay": "rgba(21, 71, 52, 0.35)"
+    },
+    "dark": {
+      "canvas": "#0E1A15",
+      "surface": "#15241D",
+      "raised": "#1C2E26",
+      "sunken": "#0A140F",
+
+      "ink": "#F2F1E8",
+      "muted": "#B7CDC2",
+      "faint": "#789F90",
+
+      "line": "#22362D",
+      "line-strong": "#33493F",
+
+      "accent": "#A4D65E",
+      "accent-hover": "#B8E07E",
+      "accent-ink": "#154734",
+
+      "secondary": "#F2C75C",
+
+      "danger": "#F07167",
+      "success": "#5CB8B2",
+      "warn": "#FF6A39",
+
+      "overlay": "rgba(0, 0, 0, 0.6)"
+    }
+  },
+  "components": {
+    "light": {
+      "sidebar-bg": "#E7EFEB",
+      "sidebar-ink": "#3E4A44",
+      "sidebar-ink-active": "#154734",
+      "sidebar-item-hover": "rgba(21, 71, 52, 0.06)",
+      "sidebar-item-active": "rgba(21, 71, 52, 0.08)",
+      "sidebar-line": "#D3E0D9"
+    },
+    "dark": {
+      "sidebar-bg": "#12211B",
+      "sidebar-ink": "#B7CDC2",
+      "sidebar-ink-active": "#F2F1E8",
+      "sidebar-item-hover": "rgba(255, 255, 255, 0.05)",
+      "sidebar-item-active": "rgba(164, 214, 94, 0.1)",
+      "sidebar-line": "#1C2E26"
+    }
+  },
+  "categoryPalette": ["#154734", "#BD8B13", "#3A913F", "#5CB8B2", "#789F90", "#FF6A39"]
+}
